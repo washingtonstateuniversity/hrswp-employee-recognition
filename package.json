@@ -1,0 +1,21 @@
+{
+  "name": "@washingtonstateuniversity/hrswp-employee-recognition",
+  "version": "0.1.0-alpha.1",
+  "description": "A WSU HRS WordPress plugin that helps to manage the employee recognition progmam.",
+  "homepage": "https://github.com/washingtonstateuniversity/hrswp-employee-recognition/blob/stable/README.md",
+  "license": "GPL-3.0-or-later",
+  "author": "Adam Turner",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/washingtonstateuniversity/hrswp-employee-recognition"
+  },
+  "bugs": {
+    "url": "https://github.com/washingtonstateuniversity/hrswp-employee-recognition/issues"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "",
+    "lint": "",
+    "export": ""
+  }
+}
