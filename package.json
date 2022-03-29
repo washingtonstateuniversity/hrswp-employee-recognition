@@ -12,7 +12,9 @@
   "bugs": {
     "url": "https://github.com/washingtonstateuniversity/hrswp-employee-recognition/issues"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@wordpress/scripts": "^22.3.0"
+  },
   "scripts": {
     "build": "",
     "lint": "",
