@@ -18,6 +18,13 @@
 
 namespace Hrswp\EmployeeRecognition;
 
+use Hrswp\EmployeeRecognition\AwardPostType;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+// Load class.
+require_once dirname( __FILE__ ) . '/inc/classes/class-award-post-type.php';
+
+AwardPostType\Award_Post_Type::factory();
