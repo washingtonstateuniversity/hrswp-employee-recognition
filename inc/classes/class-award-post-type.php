@@ -66,6 +66,8 @@ class Award_Post_Type {
 			'capability_type'    => 'post',
 			'has_archive'        => false,
 			'hierarchical'       => false,
+			'template'           => $template,
+			'template_lock'      => 'all',
 			'supports'           => array(
 				'title',
 				'editor',
