@@ -19,6 +19,7 @@ class Award_Post_Type {
 	 */
 	public function setup(): void {
 		add_action( 'init', array( $this, 'action_register_post_types' ) );
+		add_action( 'init', array( $this, 'action_register_award_meta' ) );
 	}
 
 	/**
@@ -71,6 +72,41 @@ class Award_Post_Type {
 		);
 
 		register_post_type( 'hrswp_er_awards', $award_args );
+	}
+
+	/**
+	 * Registers the ER Awards post meta.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see register_meta
+	 * @return void
+	 */
+	public function action_register_award_meta() {
+		register_meta(
+			'post',
+			'hrswp_er_awards_year',
+			array(
+				'object_subtype'    => 'hrswp_er_awards',
+				'type'              => 'integer',
+				'default'           => 1,
+				'show_in_rest'      => true,
+				'single'            => true,
+				'sanitize_callback' => function( $value ) {
+					$value = (int) $value;
+					if ( empty( $value ) ) {
+						$value = 1;
+					}
+					if ( $value < -1 ) {
+						$value = abs( $value );
+					}
+					return $value;
+				},
+				'auth_callback'     => function() {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
 	}
 
 	/**
