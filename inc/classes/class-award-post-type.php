@@ -20,6 +20,8 @@ class Award_Post_Type {
 	public function setup(): void {
 		add_action( 'init', array( $this, 'action_register_post_types' ) );
 		add_action( 'init', array( $this, 'action_register_award_meta' ) );
+		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 	}
 
 	/**
@@ -112,6 +114,63 @@ class Award_Post_Type {
 					return current_user_can( 'edit_posts' );
 				},
 			)
+		);
+	}
+
+	/**
+	 * Registers blocks for the ER Awards post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see register_block_type
+	 * @return void
+	 */
+	public function action_register_post_type_blocks(): void {
+		$blocks_dir = plugin_dir_path( dirname( __DIR__ ) ) . 'build/blocks';
+		if ( ! is_dir( $blocks_dir ) ) {
+			return;
+		}
+
+		$results    = scandir( $blocks_dir );
+		$exclusions = array( '.', '..', 'CVS', 'node_modules', 'vendor', 'bower_components' );
+		$dirs       = array();
+
+		foreach ( $results as $result ) {
+			if ( in_array( $result, $exclusions, true ) ) {
+				continue;
+			}
+			$result_path = $blocks_dir . '/' . $result;
+			if ( is_dir( $result_path ) ) {
+				if ( ! in_array( 'block.json', scandir( $result_path ), true ) ) {
+					continue;
+				}
+				$dirs[] = trailingslashit( $result_path );
+			}
+		}
+
+		if ( ! empty( $dirs ) ) {
+			foreach ( $dirs as $dir ) {
+				register_block_type( $dir );
+			}
+		}
+	}
+
+	/**
+	 * Registers editor assets.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wp_register_script
+	 * @return void
+	 */
+	public function action_register_editor_assets(): void {
+		$asset_file = include plugin_dir_path( dirname( __DIR__ ) ) . 'build/index.asset.php';
+
+		wp_register_script(
+			'hrswp-employee-recognition',
+			plugins_url( 'build/index.js', dirname( __DIR__ ) ),
+			$asset_file['dependencies'],
+			$asset_file['version']
 		);
 	}
 
