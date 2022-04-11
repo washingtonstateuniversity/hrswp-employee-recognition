@@ -170,7 +170,8 @@ class Award_Post_Type {
 			'hrswp-employee-recognition',
 			plugins_url( 'build/index.js', dirname( __DIR__ ) ),
 			$asset_file['dependencies'],
-			$asset_file['version']
+			$asset_file['version'],
+			true
 		);
 	}
 
