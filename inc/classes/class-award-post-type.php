@@ -22,6 +22,7 @@ class Award_Post_Type {
 		add_action( 'init', array( $this, 'action_register_award_meta' ) );
 		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
+		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 	}
 
 	/**
@@ -173,6 +174,22 @@ class Award_Post_Type {
 			$asset_file['version'],
 			true
 		);
+	}
+
+	/**
+	 * Replaces the "Add title" placeholder for the ER Awards post type.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string   $text Placeholder text. Default 'Add title'.
+	 * @param \WP_Post $post The Post object.
+	 * @return string The placeholder text.
+	 */
+	public function filter_post_title_placeholder( string $text, \WP_Post $post ): string {
+		if ( 'hrswp_er_awards' !== $post->post_type ) {
+			return $text;
+		}
+		return __( 'Add award name', 'hrswp-employee-recognition' );
 	}
 
 	/**
