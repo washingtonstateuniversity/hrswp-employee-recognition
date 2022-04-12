@@ -98,7 +98,7 @@ class Award_Post_Type {
 			array(
 				'object_subtype'    => 'hrswp_er_awards',
 				'type'              => 'integer',
-				'default'           => 1,
+				'default'           => -1,
 				'show_in_rest'      => true,
 				'single'            => true,
 				'sanitize_callback' => function( $value ) {
