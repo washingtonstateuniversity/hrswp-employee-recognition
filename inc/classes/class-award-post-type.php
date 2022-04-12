@@ -55,25 +55,8 @@ class Award_Post_Type {
 		);
 
 		$template = array(
-			array(
-				'core/columns',
-				array(
-					array(
-						'core/column',
-						array( 'width' => '66.66%' ),
-						array(
-							array( 'hrswp/er-award-description' ),
-						),
-					),
-					array(
-						'core/column',
-						array( 'width' => '33.33%' ),
-						array(
-							array( 'hrswp/er-award-meta-year' ),
-						),
-					),
-				),
-			),
+			array( 'hrswp/er-award-description' ),
+			array( 'hrswp/er-award-meta-year' ),
 		);
 
 		$award_args = array(
