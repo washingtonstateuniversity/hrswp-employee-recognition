@@ -7,8 +7,9 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import * as erAwardDescription from './er-award-description';
+import * as erAwardMetaYear from './er-award-meta-year';
 
-const erAwardBlocks = [ erAwardDescription ];
+const erAwardBlocks = [ erAwardDescription, erAwardMetaYear ];
 
 const registerBlock = ( block ) => {
 	if ( ! block ) {

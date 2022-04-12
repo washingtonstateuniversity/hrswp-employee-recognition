@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "hrswp/er-award-meta-year",
+	"title": "ER Award Year",
+	"category": "text",
+	"description": "The length-of-service year this award belongs to.",
+	"keywords": [ "text" ],
+	"textdomain": "default",
+	"supports": {
+		"html": false
+	},
+	"editorScript": "hrswp-employee-recognition"
+}
