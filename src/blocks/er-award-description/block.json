@@ -26,7 +26,8 @@
 		}
 	},
 	"supports": {
-		"className": false
+		"className": false,
+		"inserter": false
 	},
 	"editorScript": "hrswp-employee-recognition"
 }
