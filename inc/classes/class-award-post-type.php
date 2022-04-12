@@ -54,7 +54,27 @@ class Award_Post_Type {
 			'use_featured_image'    => esc_html__( 'Use as award image', 'hrswp-employee-recognition' ),
 		);
 
-		$template = array();
+		$template = array(
+			array(
+				'core/columns',
+				array(
+					array(
+						'core/column',
+						array( 'width' => '66.66%' ),
+						array(
+							array( 'hrswp/er-award-description' ),
+						),
+					),
+					array(
+						'core/column',
+						array( 'width' => '33.33%' ),
+						array(
+							array( 'hrswp/er-award-meta-year' ),
+						),
+					),
+				),
+			),
+		);
 
 		$award_args = array(
 			'labels'             => $award_labels,
