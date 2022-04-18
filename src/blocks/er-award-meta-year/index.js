@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { calendar as icon } from "@wordpress/icons";
+import { calendar as icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import edit from "./edit";
-import metadata from "./block.json";
+import edit from './edit';
+import metadata from './block.json';
 
 const { name } = metadata;
 
