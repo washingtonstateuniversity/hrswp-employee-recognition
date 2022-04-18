@@ -6,12 +6,22 @@ import { useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { useBlockProps } from '@wordpress/block-editor';
 
-function erAwardMetaYearEdit() {
+/**
+ * Internal dependencies
+ */
+import { STORE_NAME } from '../../store/constants';
+
+function ERAwardMetaYearEdit() {
 	const blockProps = useBlockProps();
-	const postType = useSelect(
-		( select ) => select( 'core/editor' ).getCurrentPostType(),
-		[]
-	);
+
+	const { postType, erAwardOptions } = useSelect( ( select ) => {
+		return {
+			postType: select( 'core/editor' ).getCurrentPostType(),
+			erAwardOptions: select( STORE_NAME ).getOption(
+				'hrswp_er_award_years'
+			),
+		};
+	}, [] );
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
 	const metaFieldValue = meta[ 'hrswp_er_awards_year' ];
@@ -40,4 +50,4 @@ function erAwardMetaYearEdit() {
 	);
 }
 
-export default erAwardMetaYearEdit;
+export default ERAwardMetaYearEdit;
