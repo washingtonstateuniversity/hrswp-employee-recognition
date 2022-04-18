@@ -24,8 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Load settings.
+// Load settings and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
+require_once dirname( __FILE__ ) . '/inc/api.php';
 
 // Load class.
 require_once dirname( __FILE__ ) . '/inc/classes/class-award-post-type.php';
