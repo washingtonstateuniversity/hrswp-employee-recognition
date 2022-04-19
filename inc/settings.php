@@ -27,8 +27,8 @@ function settings_field_award_years(): void {
 		esc_html__(
 			'Length-of-service awards are grouped by years of service.
 			Enter the award year tiers as a number (5, for example) and
-			separate multiple years with line breaks. The “all years” group is
-			added automatically.',
+			separate multiple years with line breaks. Use -1 (negative
+			one) to create an “all years” group.',
 			'hrswp-employee-recognition'
 		),
 		esc_html__( 'Warning: Before deleting a group make sure to unassign all awards from it.', 'hrswp-employee-recognition' )
@@ -49,8 +49,11 @@ function sanitize_award_year_setting( string $value ): string {
 	$value = array_filter( array_map( 'trim', $value ) );
 	$value = array_filter(
 		array_map(
-			function( string $str ): string {
-				return preg_replace( '/\D/', '', wp_specialchars_decode( $str ) );
+			function( string $year ): string {
+				$year = preg_replace( '/[^\-0-9]/', '', wp_specialchars_decode( $year ) );
+				$year = ! is_numeric( $year ) ? '' : $year;
+				$year = ( -1 > $year ) ? '' : $year;
+				return $year;
 			},
 			$value
 		)
