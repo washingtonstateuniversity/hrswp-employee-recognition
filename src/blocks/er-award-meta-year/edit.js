@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { RadioControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { Placeholder, RadioControl, Spinner } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { useBlockProps } from '@wordpress/block-editor';
@@ -11,17 +12,50 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import { STORE_NAME } from '../../store/constants';
 
+/**
+ * Generates the radio control year options from the string.
+ *
+ * Adds the "All Years" option to the list of choices.
+ *
+ * @param {string} awardYearGroups
+ * @return {[Object]}
+ */
+function formatAwardYearOptions( awardYearGroups ) {
+	const awardYears = awardYearGroups
+		.split( /\r?\n/ )
+		.filter( ( year ) => year )
+		.map( ( yearGroup ) => {
+            return { label: `${ yearGroup } Years`, value: Number( yearGroup ) }
+    	} );
+
+	return [
+		{ label: "All Years", value: -1 },
+		...awardYears,
+	];
+}
+
 function ERAwardMetaYearEdit() {
 	const blockProps = useBlockProps();
 
-	const { postType, erAwardOptions } = useSelect( ( select ) => {
+	const {
+		postType,
+		erAwardYearGroups,
+		isRequesting,
+	} = useSelect( ( select ) => {
+		const { getCurrentPostType } = select( 'core/editor' );
+		const { getOption, isResolving } = select( STORE_NAME );
+
 		return {
-			postType: select( 'core/editor' ).getCurrentPostType(),
-			erAwardOptions: select( STORE_NAME ).getOption(
-				'hrswp_er_award_years'
-			),
+			postType: getCurrentPostType(),
+			erAwardYearGroups: getOption( 'hrswp_er_award_years' ),
+			isRequesting: isResolving( 'getOption', [ 'hrswp_er_award_years' ] ),
 		};
 	}, [] );
+
+	const erAwardOptions =
+		erAwardYearGroups?.length > 0
+			? formatAwardYearOptions( erAwardYearGroups )
+			: [];
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
 	const metaFieldValue = meta[ 'hrswp_er_awards_year' ];
@@ -30,20 +64,19 @@ function ERAwardMetaYearEdit() {
 		setMeta( { ...meta, hrswp_er_awards_year: Number( newValue ) } );
 	};
 
+	console.log( isRequesting );
+
 	return (
 		<div { ...blockProps }>
+			{ isRequesting && (
+				<Placeholder icon="admin-post" label={ __( 'ER Award Year' ) }>
+					<Spinner />
+				</Placeholder>
+			) }
 			<RadioControl
 				label="ER Award Year"
 				selected={ metaFieldValue }
-				options={ [
-					{ label: 'All Years', value: -1 },
-					{ label: '5 Years', value: 5 },
-					{ label: '10 Years', value: 10 },
-					{ label: '15 Years', value: 15 },
-					{ label: '20 Years', value: 20 },
-					{ label: '25 Years', value: 25 },
-					{ label: '30 Years', value: 30 },
-				] }
+				options={ erAwardOptions }
 				onChange={ updateMetaValue }
 			/>
 		</div>
