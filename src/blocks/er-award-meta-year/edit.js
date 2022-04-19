@@ -17,40 +17,46 @@ import { STORE_NAME } from '../../store/constants';
  *
  * Adds the "All Years" option to the list of choices.
  *
- * @param {string} awardYearGroups
- * @return {[Object]}
+ * @param {string} awardYearGroups A newline-separated string of award year groups.
+ * @return {Object[]} The formatted award years for the radio component.
  */
 function formatAwardYearOptions( awardYearGroups ) {
 	const awardYears = awardYearGroups
 		.split( /\r?\n/ )
 		.filter( ( year ) => year )
 		.map( ( yearGroup ) => {
-            return { label: `${ yearGroup } Years`, value: Number( yearGroup ) }
-    	} );
+			const yearGroupOption =
+				'-1' !== yearGroup
+					? {
+							label: `${ yearGroup } Years`,
+							value: Number( yearGroup ),
+					  }
+					: { label: 'All Years', value: Number( yearGroup ) };
 
-	return [
-		{ label: "All Years", value: -1 },
-		...awardYears,
-	];
+			return yearGroupOption;
+		} );
+
+	return awardYears;
 }
 
 function ERAwardMetaYearEdit() {
 	const blockProps = useBlockProps();
 
-	const {
-		postType,
-		erAwardYearGroups,
-		isRequesting,
-	} = useSelect( ( select ) => {
-		const { getCurrentPostType } = select( 'core/editor' );
-		const { getOption, isResolving } = select( STORE_NAME );
+	const { postType, erAwardYearGroups, isRequesting } = useSelect(
+		( select ) => {
+			const { getCurrentPostType } = select( 'core/editor' );
+			const { getOption, isResolving } = select( STORE_NAME );
 
-		return {
-			postType: getCurrentPostType(),
-			erAwardYearGroups: getOption( 'hrswp_er_award_years' ),
-			isRequesting: isResolving( 'getOption', [ 'hrswp_er_award_years' ] ),
-		};
-	}, [] );
+			return {
+				postType: getCurrentPostType(),
+				erAwardYearGroups: getOption( 'hrswp_er_award_years' ),
+				isRequesting: isResolving( 'getOption', [
+					'hrswp_er_award_years',
+				] ),
+			};
+		},
+		[]
+	);
 
 	const erAwardOptions =
 		erAwardYearGroups?.length > 0
@@ -58,13 +64,11 @@ function ERAwardMetaYearEdit() {
 			: [];
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
-	const metaFieldValue = meta[ 'hrswp_er_awards_year' ];
+	const metaFieldValue = meta.hrswp_er_awards_year;
 
 	const updateMetaValue = ( newValue ) => {
 		setMeta( { ...meta, hrswp_er_awards_year: Number( newValue ) } );
 	};
-
-	console.log( isRequesting );
 
 	return (
 		<div { ...blockProps }>
