@@ -1,4 +1,4 @@
-name: "\U0001F41B Bug report"
+name: "🐛 Bug report"
 description: "Report a bug with this project."
 labels: "bug"
 body:
@@ -13,7 +13,7 @@ body:
           label: Describe the Issue
           description: Please write brief and clear description of the bug, including what you expect to happen and what actually happened.
           placeholder: |
-              The '...' feature is not working properly. I expect '...' to happen, but '...' happens instead.
+              The `...` feature is not working properly. I expect `...` to happen, but `...` happens instead.
       validations:
           required: true
 
@@ -23,9 +23,9 @@ body:
           label: Steps to Reproduce
           description: Please write the steps needed to reproduce the bug.
           placeholder: |
-              1. Go to '...'
-              2. Click on '...'
-              3. Scroll down to '...'
+              1. Go to `...`
+              2. Click on `...`
+              3. Scroll down to `...`
               4. See error
       validations:
           required: true
