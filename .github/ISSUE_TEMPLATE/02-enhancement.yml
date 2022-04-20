@@ -25,5 +25,5 @@ body:
         Please provide a concise description of any alternative solutions you've considered.
       placeholder: |
         I considered `...describe alternative...`, but I feel my proposed solution is better because `...reasons...`.
-      validations:
-        required: false
+    validations:
+      required: false
