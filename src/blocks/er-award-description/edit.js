@@ -16,7 +16,7 @@ import {
 } from '@wordpress/block-editor';
 import { formatLtr } from '@wordpress/icons';
 
-function ErAwardRTLControl( { direction, setDirection } ) {
+function ERAwardRTLControl( { direction, setDirection } ) {
 	return (
 		isRTL() && (
 			<ToolbarDropdownMenu
@@ -37,7 +37,7 @@ function ErAwardRTLControl( { direction, setDirection } ) {
 	);
 }
 
-function erAwardDescriptionEdit( {
+function ERAwardDescriptionEdit( {
 	attributes,
 	mergeBlocks,
 	onReplace,
@@ -61,7 +61,7 @@ function erAwardDescriptionEdit( {
 						setAttributes( { align: newAlign } )
 					}
 				/>
-				<ErAwardRTLControl
+				<ERAwardRTLControl
 					direction={ direction }
 					setDirection={ ( newDirection ) =>
 						setAttributes( { direction: newDirection } )
@@ -93,4 +93,4 @@ function erAwardDescriptionEdit( {
 	);
 }
 
-export default erAwardDescriptionEdit;
+export default ERAwardDescriptionEdit;
