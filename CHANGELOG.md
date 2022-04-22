@@ -2,7 +2,7 @@
 
 Author: Adam Turner  
 Author: Washington State University  
-URI: https://github.com/washingtonstateuniversity/hrswp-employee-recognition
+URI: <https://github.com/washingtonstateuniversity/hrswp-employee-recognition>
 
 <!--
 Changelog formatting (http://semver.org/):
