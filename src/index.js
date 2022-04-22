@@ -8,6 +8,7 @@ import { register } from '@wordpress/data';
  */
 import { registerBlocks } from './blocks';
 import { store } from './store';
+import './editor.css';
 
 register( store );
 registerBlocks();

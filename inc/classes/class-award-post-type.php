@@ -177,6 +177,13 @@ class Award_Post_Type {
 			$asset_file['version'],
 			true
 		);
+
+		wp_register_style(
+			'hrswp-employee-recognition-editor',
+			plugins_url( 'build/index.css', dirname( __DIR__ ) ),
+			array(),
+			$asset_file['version'],
+		);
 	}
 
 	/**
