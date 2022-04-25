@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/washingtonstateuniversity/hrswp-employee-recognition
  * Update URI: https://api.github.com/repos/washingtonstateuniversity/hrswp-employee-recognition/releases/latest
  * Description: WSU HRS plugin that helps to manage the employee recognition progmam.
- * Version: 0.1.0-alpha.1
+ * Version: 1.0.0-alpha.1
  * Author: Adam Turner
  * Author URI: https://hrs.wsu.edu/
  * License: GPLv3 or later
