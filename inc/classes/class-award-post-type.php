@@ -57,6 +57,7 @@ class Award_Post_Type {
 		$template = array(
 			array( 'hrswp/er-award-description' ),
 			array( 'hrswp/er-award-meta-year' ),
+			array( 'hrswp/er-award-inventory' ),
 		);
 
 		$award_args = array(
@@ -113,6 +114,28 @@ class Award_Post_Type {
 						$value = abs( $value );
 					}
 					return $value;
+				},
+				'auth_callback'     => function() {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+
+		register_meta(
+			'post',
+			'hrswp_er_awards_quantity',
+			array(
+				'object_subtype'    => 'hrswp_er_awards',
+				'type'              => 'integer',
+				'default'           => 5000,
+				'show_in_rest'      => true,
+				'single'            => true,
+				'sanitize_callback' => function( $value ) {
+					$value = (int) $value;
+					if ( empty( $value ) ) {
+						$value = 5000;
+					}
+					return abs( $value );
 				},
 				'auth_callback'     => function() {
 					return current_user_can( 'edit_posts' );
