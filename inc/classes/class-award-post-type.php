@@ -142,6 +142,28 @@ class Award_Post_Type {
 				},
 			)
 		);
+
+		register_meta(
+			'post',
+			'hrswp_er_awards_reserve',
+			array(
+				'object_subtype'    => 'hrswp_er_awards',
+				'type'              => 'integer',
+				'default'           => 1,
+				'show_in_rest'      => true,
+				'single'            => true,
+				'sanitize_callback' => function( $value ) {
+					$value = (int) $value;
+					if ( empty( $value ) ) {
+						$value = 1;
+					}
+					return abs( $value );
+				},
+				'auth_callback'     => function() {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
 	}
 
 	/**
