@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { paragraph as icon } from '@wordpress/icons';
+import { info as icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
