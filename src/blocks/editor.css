@@ -1,1 +1,47 @@
-@import "./er-award-description/editor.css";
+.post-type-hrswp_er_awards .is-root-container {
+	display: flex;
+	flex-direction: column;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	max-width: var(--wp--custom--layout--content-size);
+	row-gap: 1rem;
+}
+
+.wp-block-hrswp-er-award-description,
+.wp-block-hrswp-er-award-meta-year,
+.wp-block-hrswp-er-award-inventory {
+	border: 1px solid var(--wp--preset--color--cyan-bluish-gray);
+	padding: 1rem;
+	width: 90%;
+
+	& .components-base-control__label {
+		font-size: 1.4em;
+	}
+}
+
+.wp-block-hrswp-er-award-description {
+	flex: 1 1 100%;
+}
+
+@media (min-width: 782px) {
+
+	.post-type-hrswp_er_awards .is-root-container {
+		column-gap: 2.5%;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+	}
+
+	.wp-block-hrswp-er-award-description,
+	.wp-block-hrswp-er-award-meta-year,
+	.wp-block-hrswp-er-award-inventory {
+		width: var(--wp--custom--layout--content-size);
+	}
+
+	.wp-block-hrswp-er-award-meta-year,
+	.wp-block-hrswp-er-award-inventory {
+		flex: 1 1 47%;
+
+	}
+
+}
