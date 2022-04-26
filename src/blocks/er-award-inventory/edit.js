@@ -10,6 +10,7 @@ import {
 import { useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
+import { box, pin } from "@wordpress/icons";
 
 function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 	const { isQuantityEditable } = attributes;
@@ -47,6 +48,8 @@ function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 			<div { ...blockProps }>
 				<RangeControl
 					label={ __( 'ER Award Quantity' ) }
+					help={ __( 'The number of awards in inventory.' ) }
+					beforeIcon={ box }
 					value={ quantityMetaFieldValue }
 					onChange={ updateQuantityMetaValue }
 					min={ 0 }
@@ -57,6 +60,8 @@ function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 				/>
 				<RangeControl
 					label={ __( 'ER Award Reserve' ) }
+					help={ __( 'The inventory amount at which an admin is notified.' ) }
+					beforeIcon={ pin }
 					value={ reserveMetaFieldValue }
 					onChange={ updateReserveMetaValue }
 					min={ 0 }
@@ -64,6 +69,7 @@ function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 					step={ 1 }
 					withInputField={ true }
 					disabled={ ! isQuantityEditable }
+					separatorType={ 'topFullWidth' }
 				/>
 			</div>
 		</>
