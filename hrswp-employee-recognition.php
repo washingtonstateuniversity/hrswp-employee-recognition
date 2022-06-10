@@ -24,8 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Load settings and API endpoint.
+// Load settings, blocks, and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
+require_once dirname( __FILE__ ) . '/inc/blocks.php';
 require_once dirname( __FILE__ ) . '/inc/api.php';
 
 // Load class.

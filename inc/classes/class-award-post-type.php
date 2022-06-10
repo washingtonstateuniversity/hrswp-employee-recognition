@@ -20,7 +20,6 @@ class Award_Post_Type {
 	public function setup(): void {
 		add_action( 'init', array( $this, 'action_register_post_types' ) );
 		add_action( 'init', array( $this, 'action_register_award_meta' ) );
-		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 	}
@@ -164,44 +163,6 @@ class Award_Post_Type {
 				},
 			)
 		);
-	}
-
-	/**
-	 * Registers blocks for the ER Awards post type.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @see register_block_type
-	 * @return void
-	 */
-	public function action_register_post_type_blocks(): void {
-		$blocks_dir = plugin_dir_path( dirname( __DIR__ ) ) . 'build/blocks';
-		if ( ! is_dir( $blocks_dir ) ) {
-			return;
-		}
-
-		$results    = scandir( $blocks_dir );
-		$exclusions = array( '.', '..', 'CVS', 'node_modules', 'vendor', 'bower_components' );
-		$dirs       = array();
-
-		foreach ( $results as $result ) {
-			if ( in_array( $result, $exclusions, true ) ) {
-				continue;
-			}
-			$result_path = $blocks_dir . '/' . $result;
-			if ( is_dir( $result_path ) ) {
-				if ( ! in_array( 'block.json', scandir( $result_path ), true ) ) {
-					continue;
-				}
-				$dirs[] = trailingslashit( $result_path );
-			}
-		}
-
-		if ( ! empty( $dirs ) ) {
-			foreach ( $dirs as $dir ) {
-				register_block_type( $dir );
-			}
-		}
 	}
 
 	/**
