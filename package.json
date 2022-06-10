@@ -28,7 +28,7 @@
 		"postcss-preset-env": "^7.4.3"
 	},
 	"scripts": {
-		"build": "wp-scripts build",
+		"build": "wp-scripts build --webpack-copy-php",
 		"format": "run-p 'format:*'",
 		"format:wp": "wp-scripts format",
 		"format:php": "composer format",
@@ -39,6 +39,6 @@
 		"lint:pkg": "wp-scripts lint-pkg-json",
 		"lint:docs": "wp-scripts lint-md-docs",
 		"export": "wp-scripts plugin-zip",
-		"start": "wp-scripts start"
+		"start": "wp-scripts start --webpack-copy-php"
 	}
 }
