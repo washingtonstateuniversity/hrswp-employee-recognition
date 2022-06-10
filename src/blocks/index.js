@@ -9,11 +9,13 @@ import { registerBlockType } from '@wordpress/blocks';
 import * as erAwardDescription from './er-award-description';
 import * as erAwardMetaYear from './er-award-meta-year';
 import * as erAwardInventory from './er-award-inventory';
+import * as erAwardsList from './er-awards-list';
 
 const erAwardBlocks = [
 	erAwardDescription,
 	erAwardMetaYear,
 	erAwardInventory,
+	erAwardsList,
 ];
 
 const registerBlock = ( block ) => {

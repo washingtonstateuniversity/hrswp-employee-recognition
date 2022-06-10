@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "hrswp/er-awards-list",
+	"title": "ER Awards List",
+	"category": "widgets",
+	"description": "Display a list of employee recognition awards.",
+	"keywords": [ "awards" ],
+	"textdomain": "default",
+	"attributes": {
+		"awardsLayout": {
+			"type": "string",
+			"default": "grid"
+		},
+		"columns": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true
+	},
+	"editorScript": "hrswp-employee-recognition"
+}
