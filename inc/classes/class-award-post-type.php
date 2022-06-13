@@ -34,23 +34,23 @@ class Award_Post_Type {
 	 */
 	public function action_register_post_types(): void {
 		$award_labels = array(
-			'name'                  => esc_html_x( 'ER Awards Manager', 'post type general name', 'hrswp-employee-recognition' ),
-			'singular_name'         => esc_html_x( 'Award', 'post type singular name', 'hrswp-employee-recognition' ),
-			'add_new'               => _x( 'Create Award', 'post type', 'hrswp-employee-recognition' ),
-			'add_new_item'          => esc_html__( 'ER Awards Manager', 'hrswp-employee-recognition' ),
-			'edit_item'             => esc_html__( 'Edit Award', 'hrswp-employee-recognition' ),
-			'new_item'              => esc_html__( 'New Award', 'hrswp-employee-recognition' ),
-			'all_items'             => esc_html__( 'ER Awards Manager', 'hrswp-employee-recognition' ),
-			'view_items'            => esc_html__( 'View Award', 'hrswp-employee-recognition' ),
-			'search_items'          => esc_html__( 'Search Awards', 'hrswp-employee-recognition' ),
-			'not_found'             => esc_html__( 'No awards found.', 'hrswp-employee-recognition' ),
-			'not_found_in_trash'    => esc_html__( 'No awards found in trash.', 'hrswp-employee-recognition' ),
+			'name'                  => esc_html_x( 'ER Awards Manager', 'post type general name', 'hrswp-er' ),
+			'singular_name'         => esc_html_x( 'Award', 'post type singular name', 'hrswp-er' ),
+			'add_new'               => _x( 'Create Award', 'post type', 'hrswp-er' ),
+			'add_new_item'          => esc_html__( 'ER Awards Manager', 'hrswp-er' ),
+			'edit_item'             => esc_html__( 'Edit Award', 'hrswp-er' ),
+			'new_item'              => esc_html__( 'New Award', 'hrswp-er' ),
+			'all_items'             => esc_html__( 'ER Awards Manager', 'hrswp-er' ),
+			'view_items'            => esc_html__( 'View Award', 'hrswp-er' ),
+			'search_items'          => esc_html__( 'Search Awards', 'hrswp-er' ),
+			'not_found'             => esc_html__( 'No awards found.', 'hrswp-er' ),
+			'not_found_in_trash'    => esc_html__( 'No awards found in trash.', 'hrswp-er' ),
 			'parent_item_colon'     => '',
-			'menu_name'             => esc_html__( 'ER Awards', 'hrswp-employee-recognition' ),
-			'featured_image'        => esc_html__( 'Award image', 'hrswp-employee-recognition' ),
-			'set_featured_image'    => esc_html__( 'Set award image', 'hrswp-employee-recognition' ),
-			'remove_featured_image' => esc_html__( 'Remove award image.', 'hrswp-employee-recognition' ),
-			'use_featured_image'    => esc_html__( 'Use as award image', 'hrswp-employee-recognition' ),
+			'menu_name'             => esc_html__( 'ER Awards', 'hrswp-er' ),
+			'featured_image'        => esc_html__( 'Award image', 'hrswp-er' ),
+			'set_featured_image'    => esc_html__( 'Set award image', 'hrswp-er' ),
+			'remove_featured_image' => esc_html__( 'Remove award image.', 'hrswp-er' ),
+			'use_featured_image'    => esc_html__( 'Use as award image', 'hrswp-er' ),
 		);
 
 		$template = array(
@@ -177,7 +177,7 @@ class Award_Post_Type {
 		$asset_file = include plugin_dir_path( dirname( __DIR__ ) ) . 'build/index.asset.php';
 
 		wp_register_script(
-			'hrswp-employee-recognition',
+			'hrswp-er',
 			plugins_url( 'build/index.js', dirname( __DIR__ ) ),
 			$asset_file['dependencies'],
 			$asset_file['version'],
@@ -185,7 +185,7 @@ class Award_Post_Type {
 		);
 
 		wp_register_style(
-			'hrswp-employee-recognition-editor',
+			'hrswp-er-editor',
 			plugins_url( 'build/index.css', dirname( __DIR__ ) ),
 			array(),
 			$asset_file['version'],
@@ -205,7 +205,7 @@ class Award_Post_Type {
 		if ( 'hrswp_er_awards' !== $post->post_type ) {
 			return $text;
 		}
-		return __( 'Add award name', 'hrswp-employee-recognition' );
+		return __( 'Add award name', 'hrswp-er' );
 	}
 
 	/**

@@ -1,6 +1,6 @@
-name: "🐛 Bug report"
-description: "Report a bug with this project."
-labels: "bug"
+name: '🐛 Bug report'
+description: 'Report a bug with this project.'
+labels: 'bug'
 body:
     - type: markdown
       attributes:
@@ -45,28 +45,28 @@ body:
       attributes:
           label: Environment Information
           placeholder: |
-             - Device: <!-- [e.g. PC, MacBook] -->
-             - OS: <!-- [e.g. Windows 10, MacOS 10.14.3] -->
-             - WordPress version: <!-- [e.g. 5.9.3 ] -->
-             - Browser and version: <!-- [e.g. Firefox 65.0.1, Chrome 73.0.3683.75, Safari 12.0.3] -->
+              - Device: <!-- [e.g. PC, MacBook] -->
+              - OS: <!-- [e.g. Windows 10, MacOS 10.14.3] -->
+              - WordPress version: <!-- [e.g. 5.9.3 ] -->
+              - Browser and version: <!-- [e.g. Firefox 65.0.1, Chrome 73.0.3683.75, Safari 12.0.3] -->
       validations:
           required: false
 
     - type: dropdown
       id: environment-version
       attributes:
-        label: Version
-        description: What version of this project are you running?
-        options:
-          - Latest released version (stable)
-          - Development version (develop)
-          - Other
+          label: Version
+          description: What version of this project are you running?
+          options:
+              - Latest released version (stable)
+              - Development version (develop)
+              - Other
 
     - type: checkboxes
       id: environment-theme
       attributes:
-        label: Using the HRS Theme
-        description: HRS plugins are optimized to run with the HRS Theme. Please indicate whether it is active.
-        options:
-          - label: The HRS Theme is active.
-            required: false
+          label: Using the HRS Theme
+          description: HRS plugins are optimized to run with the HRS Theme. Please indicate whether it is active.
+          options:
+              - label: The HRS Theme is active.
+                required: false

@@ -1,5 +1,7 @@
 # HRSWP Employee Recognition
 
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Build Status](https://github.com/washingtonstateuniversity/hrswp-employee-recognition/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/washingtonstateuniversity/hrswp-employee-recognition/actions) [![Release Version](https://img.shields.io/github/v/release/washingtonstateuniversity/hrswp-employee-recognition)](https://github.com/washingtonstateuniversity/hrswp-employee-recognition/releases/latest) ![WordPress tested up to version 6.0.0](https://img.shields.io/badge/WordPress-v6.0.0%20tested-success.svg) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![GPLv3 License](https://img.shields.io/github/license/washingtonstateuniversity/hrswp-employee-recognition)](https://github.com/washingtonstateuniversity/hrswp-employee-recognition/blob/develop/LICENSE.md)
+
 ## Overview
 
 A WSU Human Resource Services WordPress plugin that helps to manage the employee recognition progmam.
