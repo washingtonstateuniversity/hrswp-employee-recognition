@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function settings_field_award_years(): void {
 	printf(
 		'<fieldset><legend class="screen-reader-text"><span>%1$s</span></legend><p><label for="%2$s">%4$s <strong>%5$s</strong></label></p><textarea name="%2$s" id="%2$s" class="large-text" rows="5">%3$s</textarea></fieldset>',
-		esc_html__( 'Award year options', 'hrswp-employee-recognition' ),
+		esc_html__( 'Award year options', 'hrswp-er' ),
 		esc_attr( 'hrswp_er_award_years' ),
 		esc_textarea( get_option( 'hrswp_er_award_years' ) ),
 		esc_html__(
@@ -29,9 +29,9 @@ function settings_field_award_years(): void {
 			Enter the award year tiers as a number (5, for example) and
 			separate multiple years with line breaks. Use -1 (negative
 			one) to create an “all years” group.',
-			'hrswp-employee-recognition'
+			'hrswp-er'
 		),
-		esc_html__( 'Warning: Before deleting a group make sure to unassign all awards from it.', 'hrswp-employee-recognition' )
+		esc_html__( 'Warning: Before deleting a group make sure to unassign all awards from it.', 'hrswp-er' )
 	);
 }
 
@@ -79,8 +79,8 @@ function settings_page_content(): void {
 	}
 
 	ob_start();
-	settings_fields( 'hrswp-employee-recognition' );
-	do_settings_sections( 'hrswp-employee-recognition' );
+	settings_fields( 'hrswp-er' );
+	do_settings_sections( 'hrswp-er' );
 	submit_button();
 	$fields = ob_get_contents();
 	ob_end_clean();
@@ -105,7 +105,7 @@ function settings_page_content(): void {
 add_action(
 	'admin_init',
 	function(): void {
-		$slug   = 'hrswp-employee-recognition';
+		$slug   = 'hrswp-er';
 		$option = 'hrswp_er_award_years';
 
 		register_setting(
@@ -118,14 +118,14 @@ add_action(
 
 		add_settings_section(
 			$slug . '_section_award_years',
-			esc_html__( 'Employee Recognition Awards', 'hrswp-employee-recognition' ),
+			esc_html__( 'Employee Recognition Awards', 'hrswp-er' ),
 			'__return_true',
 			$slug
 		);
 
 		add_settings_field(
 			$option,
-			esc_html__( 'Length-of-Service Award Years', 'hrswp-employee-recognition' ),
+			esc_html__( 'Length-of-Service Award Years', 'hrswp-er' ),
 			__NAMESPACE__ . '\settings_field_award_years',
 			$slug,
 			$slug . '_section_award_years'
@@ -144,10 +144,10 @@ add_action(
 	'admin_menu',
 	function(): void {
 		add_options_page(
-			esc_html__( 'HRS Employee Recognition Settings', 'hrswp-employee-recognition' ),
-			esc_html__( 'HRS Employee Recognition', 'hrswp-employee-recognition' ),
+			esc_html__( 'HRS Employee Recognition Settings', 'hrswp-er' ),
+			esc_html__( 'HRS Employee Recognition', 'hrswp-er' ),
 			'manage_options',
-			'hrswp-employee-recognition',
+			'hrswp-er',
 			__NAMESPACE__ . '\settings_page_content'
 		);
 	}
