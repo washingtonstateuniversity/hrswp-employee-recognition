@@ -58,7 +58,7 @@ function get_er_option( \WP_REST_Request $request ): object {
 		return rest_ensure_response(
 			new \WP_Error(
 				'missing-option-key',
-				__( 'No option key provided for query.', 'hrswp-employee-recognition' )
+				__( 'No option key provided for query.', 'hrswp-er' )
 			)
 		);
 	}
@@ -69,7 +69,7 @@ function get_er_option( \WP_REST_Request $request ): object {
 		return rest_ensure_response(
 			new \WP_Error(
 				'option-value-not-found',
-				__( 'Option value not found.', 'hrswp-employee-recognition' )
+				__( 'Option value not found.', 'hrswp-er' )
 			)
 		);
 	}
