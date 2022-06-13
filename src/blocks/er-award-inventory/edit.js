@@ -2,22 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	ToggleControl,
-	RangeControl,
-} from '@wordpress/components';
+import { PanelBody, ToggleControl, RangeControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
-import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
-import { box, pin } from "@wordpress/icons";
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { box, pin } from '@wordpress/icons';
 
 function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 	const { isQuantityEditable } = attributes;
 	const blockProps = useBlockProps();
-	const postType = useSelect( ( select ) =>
-		select( 'core/editor' ).getCurrentPostType(),
-	[] );
+	const postType = useSelect(
+		( select ) => select( 'core/editor' ).getCurrentPostType(),
+		[]
+	);
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', postType, 'meta' );
 	const quantityMetaFieldValue = meta.hrswp_er_awards_quantity;
@@ -28,7 +25,7 @@ function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 	};
 	const updateReserveMetaValue = ( newValue ) => {
 		setMeta( { ...meta, hrswp_er_awards_reserve: Number( newValue ) } );
-	}
+	};
 
 	return (
 		<>
@@ -60,7 +57,9 @@ function ERAwardMetaInventoryEdit( { attributes, setAttributes } ) {
 				/>
 				<RangeControl
 					label={ __( 'ER Award Reserve' ) }
-					help={ __( 'The inventory amount at which an admin is notified.' ) }
+					help={ __(
+						'The inventory amount at which an admin is notified.'
+					) }
 					beforeIcon={ pin }
 					value={ reserveMetaFieldValue }
 					onChange={ updateReserveMetaValue }
