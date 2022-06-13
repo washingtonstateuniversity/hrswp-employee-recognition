@@ -11,5 +11,6 @@
 		"html": false,
 		"inserter": false
 	},
-	"editorScript": "hrswp-employee-recognition"
+	"editorScript": "hrswp-employee-recognition",
+	"editorStyle": "hrswp-employee-recognition-editor"
 }

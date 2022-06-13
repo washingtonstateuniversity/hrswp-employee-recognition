@@ -1,6 +1,6 @@
 {
 	"name": "@washingtonstateuniversity/hrswp-employee-recognition",
-	"version": "1.0.0-alpha.1",
+	"version": "1.0.0-alpha.2",
 	"private": true,
 	"description": "A WSU HRS WordPress plugin that helps to manage the employee recognition progmam.",
 	"author": "Adam Turner",
@@ -25,7 +25,8 @@
 		"cssnano": "^5.1.7",
 		"npm-run-all": "^4.1.5",
 		"postcss-import": "^14.1.0",
-		"postcss-preset-env": "^7.4.3"
+		"postcss-preset-env": "^7.4.3",
+		"prettier": "npm:wp-prettier@^2.6.2"
 	},
 	"scripts": {
 		"build": "wp-scripts build",
