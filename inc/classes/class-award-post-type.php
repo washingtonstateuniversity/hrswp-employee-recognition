@@ -177,7 +177,7 @@ class Award_Post_Type {
 		$asset_file = include plugin_dir_path( dirname( __DIR__ ) ) . 'build/index.asset.php';
 
 		wp_register_script(
-			'hrswp-er',
+			'hrswp-employee-recognition',
 			plugins_url( 'build/index.js', dirname( __DIR__ ) ),
 			$asset_file['dependencies'],
 			$asset_file['version'],
@@ -185,7 +185,7 @@ class Award_Post_Type {
 		);
 
 		wp_register_style(
-			'hrswp-er-editor',
+			'hrswp-employee-recognition-editor',
 			plugins_url( 'build/index.css', dirname( __DIR__ ) ),
 			array(),
 			$asset_file['version'],
