@@ -28,13 +28,14 @@ register_activation_hook(
 	__FILE__,
 	function (): void {
 		// Add an option to check for flushing rewrite rules after activation.
-		add_option( 'hrswp-er-flush-rewrite-rules', true );
+		add_option( 'hrswp-er-flush-rewrite-rules', 'flush' );
 	}
 );
 
 register_deactivation_hook(
 	__FILE__,
 	function (): void {
+		delete_option( 'hrswp-er-flush-rewrite-rules' );
 		flush_rewrite_rules();
 	}
 );

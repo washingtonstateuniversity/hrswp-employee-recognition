@@ -219,7 +219,7 @@ class Award_Post_Type {
 	 * @return void
 	 */
 	public function maybe_flush_rewrite_rules(): void {
-		if ( is_admin() && true === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
+		if ( is_admin() && 'flush' === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
 			delete_option( 'hrswp-er-flush-rewrite-rules' );
 			flush_rewrite_rules();
 		}
