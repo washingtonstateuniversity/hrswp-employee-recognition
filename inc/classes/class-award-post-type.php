@@ -82,7 +82,7 @@ class Award_Post_Type {
 				'author',
 				'custom-fields',
 				'thumbnail',
-                'page-attributes',
+				'page-attributes',
 			),
 		);
 
