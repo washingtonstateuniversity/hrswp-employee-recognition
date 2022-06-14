@@ -46,7 +46,7 @@ class Award_Post_Type {
 			'search_items'          => esc_html__( 'Search Awards', 'hrswp-er' ),
 			'not_found'             => esc_html__( 'No awards found.', 'hrswp-er' ),
 			'not_found_in_trash'    => esc_html__( 'No awards found in trash.', 'hrswp-er' ),
-			'parent_item_colon'     => '',
+			'parent_item_colon'     => 'Award parent',
 			'menu_name'             => esc_html__( 'ER Awards', 'hrswp-er' ),
 			'featured_image'        => esc_html__( 'Award image', 'hrswp-er' ),
 			'set_featured_image'    => esc_html__( 'Set award image', 'hrswp-er' ),
@@ -72,7 +72,7 @@ class Award_Post_Type {
 			'show_in_rest'       => true,
 			'capability_type'    => 'post',
 			'has_archive'        => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'template'           => $template,
 			'template_lock'      => 'all',
 			'supports'           => array(
@@ -81,6 +81,7 @@ class Award_Post_Type {
 				'author',
 				'custom-fields',
 				'thumbnail',
+                'page-attributes',
 			),
 		);
 
