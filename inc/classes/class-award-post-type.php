@@ -21,6 +21,7 @@ class Award_Post_Type {
 		add_action( 'init', array( $this, 'action_register_post_types' ) );
 		add_action( 'init', array( $this, 'action_register_award_meta' ) );
 		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
+		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 	}
@@ -202,6 +203,25 @@ class Award_Post_Type {
 			foreach ( $dirs as $dir ) {
 				register_block_type( $dir );
 			}
+		}
+	}
+
+	/**
+	 * Flushes rewrite rules only on initial activation.
+	 *
+	 * Need to flush rewrite rules only after the post type is created, but
+	 * `register_activation_hook` runs before that, so we create an option flag
+	 * on activation and then check for it on each `after_setup_theme` hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see flush_rewrite_rules
+	 * @return void
+	 */
+	public function maybe_flush_rewrite_rules(): void {
+		if ( is_admin() && true === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
+			delete_option( 'hrswp-er-flush-rewrite-rules' );
+			flush_rewrite_rules();
 		}
 	}
 
