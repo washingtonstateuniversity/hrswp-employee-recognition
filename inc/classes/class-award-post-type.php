@@ -24,6 +24,7 @@ class Award_Post_Type {
 		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), 10, 1 );
 	}
 
 	/**
@@ -266,6 +267,22 @@ class Award_Post_Type {
 			return $text;
 		}
 		return __( 'Add award name', 'hrswp-er' );
+	}
+
+	/**
+	 * Filters the path of the awards post type archive template.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The path of the template to include.
+	 * @return string The path of the template to include.
+	 */
+	public function filter_template_include( string $template ): string {
+		if ( is_post_type_archive( 'hrswp_er_awards' ) ) {
+			$template = dirname( __DIR__, 2 ) . '/templates/awards.php';
+		}
+
+		return $template;
 	}
 
 	/**
