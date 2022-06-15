@@ -25,6 +25,7 @@ class Award_Post_Type {
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), 10, 1 );
+		add_filter( 'nav_menu_css_class', array( $this, 'filter_nav_menu_css_class' ), 15, 3 );
 	}
 
 	/**
@@ -283,6 +284,35 @@ class Award_Post_Type {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Moves `active` menu class from default archive to awards archive page.
+	 *
+	 * Hooks into `nav_menu_css_class` using a later priority to allow parent
+	 * theme to finish its own modifications.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array     $classes Required. Current list of nav menu item classes.
+	 * @param \WP_Post  $item    Post object representing the menu item data.
+	 * @param \stdClass $args    The arguments used to create the menu.
+	 * @return array Array of CSS classes for the nav menu item.
+	 */
+	public function filter_nav_menu_css_class( array $classes, \WP_Post $item, \stdClass $args ): array {
+		if (
+			in_array( $args->menu, array( 'site' ), true ) &&
+			is_post_type_archive( 'hrswp_er_awards' )
+		) {
+			if ( get_option( 'page_for_posts' ) === $item->object_id ) {
+				$classes = array();
+			}
+			if ( 'post_type_archive' === $item->type ) {
+				$classes[] = 'active';
+			}
+		}
+
+		return $classes;
 	}
 
 	/**
