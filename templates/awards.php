@@ -16,7 +16,7 @@ get_header();
 
 <main id="wsuwp-main" class="hrswp-employee-recognition-awards-archive">
 	<header class="page-header">
-		<h1><?php esc_html_e( 'Employee Recognition Awards', 'hrswp-er' ) ?></h1>
+		<h1><?php esc_html_e( 'Employee Recognition Awards', 'hrswp-er' ); ?></h1>
 	</header>
 	<section class="row single gutter awards-archive">
 
@@ -48,8 +48,7 @@ get_header();
 		}
 		?>
 	</section>
-	<?php // Render\archive_pagination(); ?>
-	<?php // get_template_part( 'build/templates/footer' ); ?>
+	<?php get_template_part( 'build/templates/footer' ); ?>
 
 </main><!--/#page-->
 
