@@ -24,6 +24,8 @@ class Award_Post_Type {
 		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
+		add_filter( 'manage_hrswp_er_awards_posts_columns', array( $this, 'filter_manage_post_columns' ), 10, 1 );
+		add_action( 'manage_hrswp_er_awards_posts_custom_column', array( $this, 'action_manage_custom_columns' ), 10, 2 );
 	}
 
 	/**
@@ -82,7 +84,7 @@ class Award_Post_Type {
 				'author',
 				'custom-fields',
 				'thumbnail',
-                'page-attributes',
+				'page-attributes',
 			),
 		);
 
@@ -266,6 +268,58 @@ class Award_Post_Type {
 			return $text;
 		}
 		return __( 'Add award name', 'hrswp-er' );
+	}
+
+	/**
+	 * Modifies the columns displayed in the Awards Posts list table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$post_type}_posts_columns`
+	 * @param string[] $post_columns An associative array of column headings.
+	 * @return array An associative array of column headings.
+	 */
+	public function filter_manage_post_columns( array $post_columns ): array {
+		return array(
+			'cb'       => $post_columns['cb'],
+			'image'    => __( 'Image', 'hrswp-er' ),
+			'title'    => __( 'Title', 'hrswp-er' ),
+			'year'     => __( 'Year', 'hrswp-er' ),
+			'quantity' => __( 'Quantity', 'hrswp-er' ),
+			'date'     => __( 'Date', 'hrswp-er' ),
+		);
+	}
+
+	/**
+	 * Populates the custom column content on the Awards Posts list table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$post->post_type}_posts_custom_column`
+	 * @param string $column_name The name of the column to display.
+	 * @param int    $post_id     The current post ID.
+	 * @return void
+	 */
+	public function action_manage_custom_columns( string $column_name, int $post_id ): void {
+		switch ( $column_name ) {
+			case 'image':
+				echo get_the_post_thumbnail( $post_id, array( 9999, 80 ) );
+				break;
+			case 'year':
+				$year = get_post_meta( $post_id, 'hrswp_er_awards_year', true ) ?? '(none)';
+				if ( -1 === $year ) {
+					esc_html_e( 'All years', 'hrswp-er' );
+				} else {
+					echo esc_html( (string) $year );
+				}
+				break;
+			case 'quantity':
+				echo esc_html(
+					number_format( get_post_meta( $post_id, 'hrswp_er_awards_quantity', true ), 0, '.', ',' )
+					?? '(none)'
+				);
+				break;
+		}
 	}
 
 	/**
