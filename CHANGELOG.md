@@ -28,7 +28,7 @@ Changelog formatting (http://semver.org/):
 - Create Award Description block and add to ER Award post type template. (502a381, 947478e)
 - Add option store request for year tiers and correct React component naming. (8bdda5f)
 - Create WP REST API route for getting plugin option values. (8bdda5f)
-- Set up rest route and callback for ER options API; use `-1` value for "All Years" option. (8bdda5f, 218a5c3)
+- Set up rest route and callback for ER options API; use `1` value for "All Years" option. (8bdda5f, 218a5c3, 8d726f1)
 - Create plugin settings with award years option control, close #4. (8bdda5f)
 - Method to replace the title placeholder text for ER Awards custom posts. (502a381)
 - Create base Employee Recognition Award post type and create template. (e5403e7, 947478e)
