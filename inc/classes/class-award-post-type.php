@@ -26,6 +26,8 @@ class Award_Post_Type {
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 		add_filter( 'manage_hrswp_er_awards_posts_columns', array( $this, 'filter_manage_post_columns' ), 10, 1 );
 		add_action( 'manage_hrswp_er_awards_posts_custom_column', array( $this, 'action_manage_custom_columns' ), 10, 2 );
+		add_filter( 'manage_edit-hrswp_er_awards_sortable_columns', array( $this, 'filter_manage_sortable_columns' ), 10, 1 );
+		add_action( 'pre_get_posts', array( $this, 'action_awards_list_orderby' ), 10, 1 );
 	}
 
 	/**
@@ -319,6 +321,52 @@ class Award_Post_Type {
 					?? '(none)'
 				);
 				break;
+		}
+	}
+
+	/**
+	 * Makes the Awards posts list custom columns sortable.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$this->screen->id}_sortable_columns`
+	 * @param array $sortable_columns An array of sortable columns.
+	 * @return array The array of sortable columns.
+	 */
+	public function filter_manage_sortable_columns( array $sortable_columns ): array {
+		$sortable_columns['year'] = 'awards_year';
+		$sortable_columns['quantity'] = 'awards_quantity';
+
+		return $sortable_columns;
+	}
+
+	/**
+	 * Handles the sorting logic for the Awards posts list custom columns.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `pre_get_posts`
+	 * @param \WP_Query $query The WP_Query instance (passed by reference).
+	 * @return void
+	 */
+	public function action_awards_list_orderby( \WP_Query $query ): void {
+		// Exit if not in the admin area or not the main posts query.
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		// @TODO why are both of these this excluding the pins? Maybe the '-1' value is
+		// messing with things? Try replacing '-1' with '0' or '1'.
+
+		if ( 'awards_year' === $query->get( 'orderby' ) ) {
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'meta_key', 'hrswp_er_awards_year' );
+			// $query->set( 'meta_type', 'numeric' );
+		}
+
+		if ( 'awards_quantity' === $query->get( 'orderby' ) ) {
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'hrswp_er_awards_quantity' );
 		}
 	}
 
