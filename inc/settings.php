@@ -20,18 +20,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function settings_field_award_years(): void {
 	printf(
-		'<fieldset><legend class="screen-reader-text"><span>%1$s</span></legend><p><label for="%2$s">%4$s <strong>%5$s</strong></label></p><textarea name="%2$s" id="%2$s" class="large-text" rows="5">%3$s</textarea></fieldset>',
+		'<fieldset><legend class="screen-reader-text"><span>%1$s</span></legend><p><label for="%2$s">%4$s</label></p><textarea name="%2$s" id="%2$s" class="large-text" rows="5">%3$s</textarea></fieldset>',
 		esc_html__( 'Award year options', 'hrswp-er' ),
 		esc_attr( 'hrswp_er_award_years' ),
 		esc_textarea( get_option( 'hrswp_er_award_years' ) ),
 		esc_html__(
 			'Length-of-service awards are grouped by years of service.
 			Enter the award year tiers as a number (5, for example) and
-			separate multiple years with line breaks. Use -1 (negative
-			one) to create an “all years” group.',
+			separate multiple years with line breaks. Use 1 to create an
+			“all years” group.',
 			'hrswp-er'
-		),
-		esc_html__( 'Warning: Before deleting a group make sure to unassign all awards from it.', 'hrswp-er' )
+		)
 	);
 }
 
@@ -52,7 +51,7 @@ function sanitize_award_year_setting( string $value ): string {
 			function( string $year ): string {
 				$year = preg_replace( '/[^\-0-9]/', '', wp_specialchars_decode( $year ) );
 				$year = ! is_numeric( $year ) ? '' : $year;
-				$year = ( -1 > $year ) ? '' : $year;
+				$year = ( 0 > $year ) ? (int) 0 : $year;
 				return $year;
 			},
 			$value

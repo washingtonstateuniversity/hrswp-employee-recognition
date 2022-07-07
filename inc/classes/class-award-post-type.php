@@ -82,7 +82,7 @@ class Award_Post_Type {
 				'author',
 				'custom-fields',
 				'thumbnail',
-                'page-attributes',
+				'page-attributes',
 			),
 		);
 
@@ -104,15 +104,15 @@ class Award_Post_Type {
 			array(
 				'object_subtype'    => 'hrswp_er_awards',
 				'type'              => 'integer',
-				'default'           => -1,
+				'default'           => (int) 0,
 				'show_in_rest'      => true,
 				'single'            => true,
 				'sanitize_callback' => function( $value ) {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
-						$value = 1;
+						$value = (int) 0;
 					}
-					if ( $value < -1 ) {
+					if ( $value < 0 ) {
 						$value = abs( $value );
 					}
 					return $value;
