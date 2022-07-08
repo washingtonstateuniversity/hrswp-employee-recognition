@@ -26,6 +26,10 @@ class Award_Post_Type {
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), 10, 1 );
 		add_filter( 'nav_menu_css_class', array( $this, 'filter_nav_menu_css_class' ), 15, 3 );
+		add_filter( 'manage_hrswp_er_awards_posts_columns', array( $this, 'filter_manage_post_columns' ), 10, 1 );
+		add_action( 'manage_hrswp_er_awards_posts_custom_column', array( $this, 'action_manage_custom_columns' ), 10, 2 );
+		add_filter( 'manage_edit-hrswp_er_awards_sortable_columns', array( $this, 'filter_manage_sortable_columns' ), 10, 1 );
+		add_action( 'pre_get_posts', array( $this, 'action_awards_list_orderby' ), 10, 1 );
 	}
 
 	/**
@@ -106,15 +110,15 @@ class Award_Post_Type {
 			array(
 				'object_subtype'    => 'hrswp_er_awards',
 				'type'              => 'integer',
-				'default'           => -1,
+				'default'           => (int) 0,
 				'show_in_rest'      => true,
 				'single'            => true,
 				'sanitize_callback' => function( $value ) {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
-						$value = 1;
+						$value = (int) 0;
 					}
-					if ( $value < -1 ) {
+					if ( $value < 0 ) {
 						$value = abs( $value );
 					}
 					return $value;
@@ -313,6 +317,102 @@ class Award_Post_Type {
 		}
 
 		return $classes;
+	}
+
+	/*
+	 * Modifies the columns displayed in the Awards Posts list table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$post_type}_posts_columns`
+	 * @param string[] $post_columns An associative array of column headings.
+	 * @return array An associative array of column headings.
+	 */
+	public function filter_manage_post_columns( array $post_columns ): array {
+		return array(
+			'cb'       => $post_columns['cb'],
+			'image'    => __( 'Image', 'hrswp-er' ),
+			'title'    => __( 'Title', 'hrswp-er' ),
+			'year'     => __( 'Year', 'hrswp-er' ),
+			'quantity' => __( 'Quantity', 'hrswp-er' ),
+			'date'     => __( 'Date', 'hrswp-er' ),
+		);
+	}
+
+	/**
+	 * Populates the custom column content on the Awards Posts list table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$post->post_type}_posts_custom_column`
+	 * @param string $column_name The name of the column to display.
+	 * @param int    $post_id     The current post ID.
+	 * @return void
+	 */
+	public function action_manage_custom_columns( string $column_name, int $post_id ): void {
+		switch ( $column_name ) {
+			case 'image':
+				echo get_the_post_thumbnail( $post_id, array( 9999, 80 ) );
+				break;
+			case 'year':
+				$year = get_post_meta( $post_id, 'hrswp_er_awards_year', true ) ?? '(none)';
+				if ( '1' === $year ) {
+					esc_html_e( 'All years', 'hrswp-er' );
+				} else {
+					echo esc_html( (string) $year );
+				}
+				break;
+			case 'quantity':
+				echo esc_html(
+					number_format( get_post_meta( $post_id, 'hrswp_er_awards_quantity', true ), 0, '.', ',' )
+					?? '(none)'
+				);
+				break;
+		}
+	}
+
+	/**
+	 * Makes the Awards posts list custom columns sortable.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `manage_{$this->screen->id}_sortable_columns`
+	 * @param array $sortable_columns An array of sortable columns.
+	 * @return array The array of sortable columns.
+	 */
+	public function filter_manage_sortable_columns( array $sortable_columns ): array {
+		$sortable_columns['year']     = 'awards_year';
+		$sortable_columns['quantity'] = 'awards_quantity';
+
+		return $sortable_columns;
+	}
+
+	/**
+	 * Handles the sorting logic for the Awards posts list custom columns.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see `pre_get_posts`
+	 * @param \WP_Query $query The WP_Query instance (passed by reference).
+	 * @return void
+	 */
+	public function action_awards_list_orderby( \WP_Query $query ): void {
+		// Exit if not in the admin area or not the main posts query.
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		if ( 'awards_year' === $query->get( 'orderby' ) ) {
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'meta_key', 'hrswp_er_awards_year' );
+			$query->set( 'meta_type', 'numeric' );
+		}
+
+		if ( 'awards_quantity' === $query->get( 'orderby' ) ) {
+			$query->set( 'orderby', 'meta_value_num' );
+			$query->set( 'meta_key', 'hrswp_er_awards_quantity' );
+			$query->set( 'meta_type', 'numeric' );
+		}
 	}
 
 	/**
