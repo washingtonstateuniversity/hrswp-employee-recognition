@@ -309,7 +309,7 @@ class Award_Post_Type {
 				break;
 			case 'year':
 				$year = get_post_meta( $post_id, 'hrswp_er_awards_year', true ) ?? '(none)';
-				if ( -1 === $year ) {
+				if ( '1' === $year ) {
 					esc_html_e( 'All years', 'hrswp-er' );
 				} else {
 					echo esc_html( (string) $year );
@@ -334,7 +334,7 @@ class Award_Post_Type {
 	 * @return array The array of sortable columns.
 	 */
 	public function filter_manage_sortable_columns( array $sortable_columns ): array {
-		$sortable_columns['year'] = 'awards_year';
+		$sortable_columns['year']     = 'awards_year';
 		$sortable_columns['quantity'] = 'awards_quantity';
 
 		return $sortable_columns;
@@ -355,18 +355,16 @@ class Award_Post_Type {
 			return;
 		}
 
-		// @TODO why are both of these this excluding the pins? Maybe the '-1' value is
-		// messing with things? Try replacing '-1' with '0' or '1'.
-
 		if ( 'awards_year' === $query->get( 'orderby' ) ) {
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'meta_key', 'hrswp_er_awards_year' );
-			// $query->set( 'meta_type', 'numeric' );
+			$query->set( 'meta_type', 'numeric' );
 		}
 
 		if ( 'awards_quantity' === $query->get( 'orderby' ) ) {
 			$query->set( 'orderby', 'meta_value_num' );
 			$query->set( 'meta_key', 'hrswp_er_awards_quantity' );
+			$query->set( 'meta_type', 'numeric' );
 		}
 	}
 
