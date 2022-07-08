@@ -40,7 +40,6 @@ register_deactivation_hook(
 	}
 );
 
-
 // Load settings and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
 require_once dirname( __FILE__ ) . '/inc/api.php';
