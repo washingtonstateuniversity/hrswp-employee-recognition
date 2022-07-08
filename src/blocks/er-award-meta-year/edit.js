@@ -26,7 +26,7 @@ function formatAwardYearOptions( awardYearGroups ) {
 		.filter( ( year ) => year )
 		.map( ( yearGroup ) => {
 			const yearGroupOption =
-				'-1' !== yearGroup
+				'1' !== yearGroup
 					? {
 							label: `${ yearGroup } Years`,
 							value: Number( yearGroup ),

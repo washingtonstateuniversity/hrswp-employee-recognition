@@ -21,6 +21,7 @@ class Award_Post_Type {
 		add_action( 'init', array( $this, 'action_register_post_types' ) );
 		add_action( 'init', array( $this, 'action_register_award_meta' ) );
 		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
+		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 	}
@@ -46,7 +47,7 @@ class Award_Post_Type {
 			'search_items'          => esc_html__( 'Search Awards', 'hrswp-er' ),
 			'not_found'             => esc_html__( 'No awards found.', 'hrswp-er' ),
 			'not_found_in_trash'    => esc_html__( 'No awards found in trash.', 'hrswp-er' ),
-			'parent_item_colon'     => '',
+			'parent_item_colon'     => 'Award parent',
 			'menu_name'             => esc_html__( 'ER Awards', 'hrswp-er' ),
 			'featured_image'        => esc_html__( 'Award image', 'hrswp-er' ),
 			'set_featured_image'    => esc_html__( 'Set award image', 'hrswp-er' ),
@@ -72,7 +73,7 @@ class Award_Post_Type {
 			'show_in_rest'       => true,
 			'capability_type'    => 'post',
 			'has_archive'        => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'template'           => $template,
 			'template_lock'      => 'all',
 			'supports'           => array(
@@ -81,6 +82,7 @@ class Award_Post_Type {
 				'author',
 				'custom-fields',
 				'thumbnail',
+				'page-attributes',
 			),
 		);
 
@@ -102,15 +104,15 @@ class Award_Post_Type {
 			array(
 				'object_subtype'    => 'hrswp_er_awards',
 				'type'              => 'integer',
-				'default'           => -1,
+				'default'           => (int) 0,
 				'show_in_rest'      => true,
 				'single'            => true,
 				'sanitize_callback' => function( $value ) {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
-						$value = 1;
+						$value = (int) 0;
 					}
-					if ( $value < -1 ) {
+					if ( $value < 0 ) {
 						$value = abs( $value );
 					}
 					return $value;
@@ -201,6 +203,25 @@ class Award_Post_Type {
 			foreach ( $dirs as $dir ) {
 				register_block_type( $dir );
 			}
+		}
+	}
+
+	/**
+	 * Flushes rewrite rules only on initial activation.
+	 *
+	 * Need to flush rewrite rules only after the post type is created, but
+	 * `register_activation_hook` runs before that, so we create an option flag
+	 * on activation and then check for it on each `after_setup_theme` hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see flush_rewrite_rules
+	 * @return void
+	 */
+	public function maybe_flush_rewrite_rules(): void {
+		if ( is_admin() && true === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
+			delete_option( 'hrswp-er-flush-rewrite-rules' );
+			flush_rewrite_rules();
 		}
 	}
 

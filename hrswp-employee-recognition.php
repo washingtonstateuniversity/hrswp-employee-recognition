@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/washingtonstateuniversity/hrswp-employee-recognition
  * Update URI: https://api.github.com/repos/washingtonstateuniversity/hrswp-employee-recognition/releases/latest
  * Description: WSU HRS plugin that helps to manage the employee recognition progmam.
- * Version: 1.0.0-alpha.2
+ * Version: 1.0.0-alpha.3
  * Author: Adam Turner
  * Author URI: https://hrs.wsu.edu/
  * License: GPLv3 or later
@@ -23,6 +23,22 @@ use Hrswp\EmployeeRecognition\AwardPostType;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+register_activation_hook(
+	__FILE__,
+	function (): void {
+		// Add an option to check for flushing rewrite rules after activation.
+		add_option( 'hrswp-er-flush-rewrite-rules', true );
+	}
+);
+
+register_deactivation_hook(
+	__FILE__,
+	function (): void {
+		flush_rewrite_rules();
+	}
+);
+
 
 // Load settings and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
