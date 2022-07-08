@@ -101,7 +101,7 @@ class Award_Post_Type {
 	 * @see register_meta
 	 * @return void
 	 */
-	public function action_register_award_meta() {
+	public function action_register_award_meta(): void {
 		register_meta(
 			'post',
 			'hrswp_er_awards_year',
@@ -111,7 +111,7 @@ class Award_Post_Type {
 				'default'           => (int) 0,
 				'show_in_rest'      => true,
 				'single'            => true,
-				'sanitize_callback' => function( $value ) {
+				'sanitize_callback' => function( int $value ): int {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
 						$value = (int) 0;
@@ -121,7 +121,7 @@ class Award_Post_Type {
 					}
 					return $value;
 				},
-				'auth_callback'     => function() {
+				'auth_callback'     => function(): bool {
 					return current_user_can( 'edit_posts' );
 				},
 			)
@@ -136,14 +136,14 @@ class Award_Post_Type {
 				'default'           => 5000,
 				'show_in_rest'      => true,
 				'single'            => true,
-				'sanitize_callback' => function( $value ) {
+				'sanitize_callback' => function( int $value ): int {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
 						$value = 5000;
 					}
 					return abs( $value );
 				},
-				'auth_callback'     => function() {
+				'auth_callback'     => function(): bool {
 					return current_user_can( 'edit_posts' );
 				},
 			)
@@ -158,14 +158,14 @@ class Award_Post_Type {
 				'default'           => 1,
 				'show_in_rest'      => true,
 				'single'            => true,
-				'sanitize_callback' => function( $value ) {
+				'sanitize_callback' => function( int $value ): int {
 					$value = (int) $value;
 					if ( empty( $value ) ) {
 						$value = 1;
 					}
 					return abs( $value );
 				},
-				'auth_callback'     => function() {
+				'auth_callback'     => function(): bool {
 					return current_user_can( 'edit_posts' );
 				},
 			)
