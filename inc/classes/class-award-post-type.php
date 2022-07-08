@@ -319,7 +319,7 @@ class Award_Post_Type {
 		return $classes;
 	}
 
-	/*
+	/**
 	 * Modifies the columns displayed in the Awards Posts list table.
 	 *
 	 * @since 1.0.0
