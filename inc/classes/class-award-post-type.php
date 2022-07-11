@@ -305,6 +305,10 @@ class Award_Post_Type {
 			$query->is_post_type_archive( 'hrswp_er_awards' )
 		) {
 			$query->set( 'posts_per_page', -1 );
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'meta_key', 'hrswp_er_awards_year' );
+			$query->set( 'meta_type', 'numeric' );
+			$query->set( 'order', 'ASC' );
 		}
 	}
 
