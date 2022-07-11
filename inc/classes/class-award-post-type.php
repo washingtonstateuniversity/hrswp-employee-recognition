@@ -30,6 +30,7 @@ class Award_Post_Type {
 		add_action( 'manage_hrswp_er_awards_posts_custom_column', array( $this, 'action_manage_custom_columns' ), 10, 2 );
 		add_filter( 'manage_edit-hrswp_er_awards_sortable_columns', array( $this, 'filter_manage_sortable_columns' ), 10, 1 );
 		add_action( 'pre_get_posts', array( $this, 'action_awards_list_orderby' ), 10, 1 );
+		add_action( 'pre_get_posts', array( $this, 'action_modify_archive_query' ), 10, 1 );
 	}
 
 	/**
@@ -288,6 +289,23 @@ class Award_Post_Type {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Modifies the query properties for the awards archive page.
+	 *
+	 * @see `pre_get_posts`
+	 * @param \WP_Query $query The WP_Query instance (passed by reference).
+	 * @return void
+	 */
+	public function action_modify_archive_query( \WP_Query $query ): void {
+		if (
+			! is_admin() &&
+			$query->is_main_query() &&
+			$query->is_post_type_archive( 'hrswp_er_awards' )
+		) {
+			$query->set( 'posts_per_page', -1 );
+		}
 	}
 
 	/**
