@@ -285,7 +285,7 @@ class Award_Post_Type {
 	 */
 	public function filter_template_include( string $template ): string {
 		if ( is_post_type_archive( 'hrswp_er_awards' ) ) {
-			$template = dirname( __DIR__, 2 ) . '/templates/awards.php';
+			$template = dirname( __DIR__, 2 ) . '/build/templates/awards/index.php';
 		}
 
 		return $template;
