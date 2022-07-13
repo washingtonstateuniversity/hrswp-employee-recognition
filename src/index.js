@@ -9,6 +9,7 @@ import { register } from '@wordpress/data';
 import { registerBlocks } from './blocks';
 import { store } from './store';
 import './editor.css';
+import './style.css';
 
 register( store );
 registerBlocks();

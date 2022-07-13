@@ -23,6 +23,7 @@ class Award_Post_Type {
 		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
 		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'action_enqueue_frontend_scripts' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
 		add_filter( 'template_include', array( $this, 'filter_template_include' ), 10, 1 );
 		add_filter( 'nav_menu_css_class', array( $this, 'filter_nav_menu_css_class' ), 15, 3 );
@@ -254,6 +255,28 @@ class Award_Post_Type {
 		wp_register_style(
 			'hrswp-employee-recognition-editor',
 			plugins_url( 'build/index.css', dirname( __DIR__ ) ),
+			array(),
+			$asset_file['version'],
+		);
+	}
+
+	/**
+	 * Registers scripts and styles to load on the archive frontend only.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wp_enqueue_style
+	 * @return void
+	 */
+	public function action_enqueue_frontend_scripts(): void {
+		if ( ! is_post_type_archive( 'hrswp_er_awards' ) ) {
+			return;
+		}
+		$asset_file = include plugin_dir_path( dirname( __DIR__ ) ) . 'build/index.asset.php';
+
+		wp_enqueue_style(
+			'hrswp-employee-recognition',
+			plugins_url( 'build/style-index.css', dirname( __DIR__ ) ),
 			array(),
 			$asset_file['version'],
 		);
