@@ -1,6 +1,9 @@
 <?php
 /**
- * Displays a list of awards.
+ * The HRSWP ER Awards post type archive template.
+ *
+ * Displays a list of awards and sign-in notification to non-authenticated
+ * users, or the award selection form if a user is authenticated.
  *
  * @package EmployeeRecognition
  */
@@ -20,6 +23,7 @@ get_header();
 	</header>
 
 	<section class="row single gutter awards-archive">
+		<div class="column one">
 		<?php
 		/**
 		 * SSO user authentication
@@ -33,26 +37,21 @@ get_header();
 		 * @todo Get SSO set up to authenticate user and get their WSU ID
 		 *       for use in retrieving their LOS award status.
 		 */
-		if ( is_user_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			?>
-			<div class="column one">
-				<p>Please log in with your WSU username to select an award.</p>
-				<div class="wp-block-hrswp-buttons">
-					<div class="wp-block-button"><a class="wp-block-button__link" href="#">Log in</a></div>
-				</div>
-
-				<h2>Preview Awards</h2>
-				<?php require_once( dirname( __DIR__ ) . '/awards-list/index.php' ); ?>
+			<div class="wp-block-hrswp-notification has-action-button is-style-warning">
+				<p><strong>Please log in with your WSU username to check eligibility and select an award.</strong></p>
+				<div class="wp-block-hrswp-button"><a class="wp-block-button__link">Log in</a></div>
 			</div>
+			<h2>Preview Awards</h2>
 			<?php
+			require_once dirname( __DIR__ ) . '/awards-list/index.php';
 		} else {
-			// Display the award selection form, populated with only the awards the current user
-			// is qualified to select from.
-            ?>
-            <div class="column one"></div>
-            <?php
+			// Display the award selection form.
+			require_once dirname( __DIR__ ) . '/awards-form/index.php';
 		}
 		?>
+		</div>
 	</section>
 
 	<?php get_template_part( 'build/templates/footer' ); ?>
