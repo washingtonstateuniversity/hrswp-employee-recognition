@@ -42,7 +42,7 @@ register_deactivation_hook(
 
 // Load settings, template tags, and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
-require_once dirname( __FILE__ ) . '/inc/template-tags.php';
+require_once dirname( __FILE__ ) . '/inc/awards-template.php';
 require_once dirname( __FILE__ ) . '/inc/api.php';
 require_once dirname( __FILE__ ) . '/inc/formatting.php';
 
