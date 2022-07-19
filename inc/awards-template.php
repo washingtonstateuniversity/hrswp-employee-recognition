@@ -35,8 +35,6 @@ function award_year_formatted( int $post_id ): string {
 	return ( '1' !== $award_year ) ? $award_year . ' Years' : 'All Years';
 }
 
-
-
 /**
  * Generates a form radio element as a list item.
  *
@@ -55,13 +53,19 @@ function radio_item_html( int $post_id, string $name = '' ): string {
 	$value = sanitize_title( $title );
 
 	return sprintf(
-		'<li>
-			<label for="%1$s">%2$s</label>
+		'<div class="form-award-item">
+			<figure class="wp-block-image size-small">%4$s</figure>
+			<label class="award-title" for="%1$s">%2$s</label>
 			<input type="radio" id="%1$s" name="%3$s" value="%1$s">
-		</li>',
+			<div class="award-description">%5$s</div>
+			<p class="award-group">%6$s</p>
+		</div>',
 		esc_attr( $value ),
 		esc_attr( $title ),
-		esc_attr( $name )
+		esc_attr( $name ),
+		get_the_post_thumbnail( $post_id ),
+		get_the_content( $post_id ),
+		esc_html( award_year_formatted( $post_id ) )
 	);
 }
 
@@ -93,8 +97,7 @@ function all_years_fieldset_html( int $post_id, int $prev_post_id, int $next_pos
 	if ( '0' === $prev_award_year ) {
 		$all_years_fieldset .= '
 			<fieldset class="all-year-awards">
-				<legend>' . __( 'Select a pin or select "no pin" if you do not want one.', 'hrswp-er' ) . '</legend>
-				<ul>
+				<legend>' . __( 'Select a pin:', 'hrswp-er' ) . '</legend>
 		';
 	}
 
@@ -105,12 +108,17 @@ function all_years_fieldset_html( int $post_id, int $prev_post_id, int $next_pos
 	if ( '1' !== $next_award_year ) {
 		// Generate the "no pin" option.
 		$all_years_fieldset .= '
-			<li>
-				<label for="no-pin">' . __( 'No Pin', 'hrswp-er' ) . '</label>
+			<div class="form-award-item">
+				<figure class="wp-block-image size-small">
+					<svg xmlns="http://www.w3.org/2000/svg" height="198" width="198" viewBox="-12 -14 72 72" ><path d="M40.65 44.95 35.9 40.2Q33.4 42 30.4 43q-3 1-6.4 1-4.25 0-7.9-1.525-3.65-1.525-6.35-4.225-2.7-2.7-4.225-6.35Q4 28.25 4 24q0-3.4 1-6.4 1-3 2.8-5.5L3.05 7.35 5.2 5.2l37.6 37.6ZM24 41q2.75 0 5.2-.775t4.55-2.175l-23.8-23.8q-1.4 2.1-2.175 4.55Q7 21.25 7 24q0 7.25 4.875 12.125T24 41Zm16.2-5.1-2.15-2.15q1.4-2.1 2.175-4.55Q41 26.75 41 24q0-7.25-4.875-12.125T24 7q-2.75 0-5.2.775T14.25 9.95L12.1 7.8Q14.6 6 17.6 5q3-1 6.4-1 4.2 0 7.85 1.55Q35.5 7.1 38.2 9.8q2.7 2.7 4.25 6.35Q44 19.8 44 24q0 3.4-1 6.4-1 3-2.8 5.5ZM26.15 21.85Zm-4.3 4.3Z"/></svg>
+				</figure>
+				<label class="award-title" for="no-pin">' . __( 'No Pin', 'hrswp-er' ) . '</label>
 				<input type="radio" id="no-pin" name="all-year-award" value="no-pin">
-			</li>
+				<div class="award-description">' . __( 'Select this option if you would prefer not to receive a pin.', 'hrswp-er' ) . '</div>
+				<p class="award-group">All Years</p>
+			</div>
 		';
-		$all_years_fieldset .= '</ul></fieldset>';
+		$all_years_fieldset .= '</fieldset>';
 	}
 
 	return $all_years_fieldset;
@@ -144,8 +152,7 @@ function general_fieldset_html( int $post_id, int $prev_post_id, int $next_post_
 	if ( '1' === $prev_award_year ) {
 		$general_fieldset .= '
 			<fieldset class="general-awards">
-				<legend>' . __( 'Select one award from the length-of-service awards.', 'hrswp-er' ) . '</legend>
-				<ul>
+				<legend>' . __( 'Select one award from the length-of-service awards:', 'hrswp-er' ) . '</legend>
 		';
 	}
 
@@ -154,7 +161,7 @@ function general_fieldset_html( int $post_id, int $prev_post_id, int $next_post_
 
 	// No next award year means we're at the end of the group.
 	if ( '0' === $next_award_year ) {
-		$general_fieldset .= '</ul></fieldset>';
+		$general_fieldset .= '</fieldset>';
 	}
 
 	return $general_fieldset;
