@@ -32,9 +32,23 @@ if ( have_posts() ) {
 	 * @todo Make this a function.
 	 */
 	$user_service_years = (string) '15';
+	$user_name          = (string) 'Person Person';
 
 	?>
-	<form method="post" id="hrswp-los-awards" action="/recognition/awards/">
+	<div class="wp-block-hrswp-notification is-style-positive">
+		<p><strong>
+			<?php
+			printf(
+				/* translators: 1: the user service years, 2: the user name */
+				esc_html__( 'Congratulations on %1$s years of service, %2$s!', 'hrswp-er' ),
+				esc_html( $user_service_years ),
+				esc_html( $user_name )
+			);
+			?>
+		</strong></p>
+	</div>
+	<h2><?php esc_html_e( 'Select a Pin and Service Award', 'hrswp-er' ); ?></h2>
+	<form method="post" class="awards-form" id="hrswp-los-awards" action="/recognition/awards/">
 		<?php
 		while ( have_posts() ) {
 			the_post();
@@ -64,8 +78,13 @@ if ( have_posts() ) {
 			}
 		}
 		?>
+		<button type="submit">Submit</button>
 	</form>
 	<?php
 } else {
-	echo '<p>' . esc_html__( 'We couldn&rsquo;t find any awards.', 'hrswp-er' ) . '</p>';
+	printf(
+		/* translators: the help email address as an href element */
+		'<p>' . esc_html__( 'Sorry, we couldn&rsquo;t find any awards. Please contact HRS at %s.', 'hrswp-er' ) . '</p>',
+		'<a href="mailto:hrs.employeerecognition@wsu.edu">hrs.employeerecognition@wsu.edu</a>'
+	);
 }
