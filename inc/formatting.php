@@ -24,16 +24,47 @@ function awards_template_allowed_html(): array {
 			'class' => array(),
 		),
 		'legend'   => array(),
-		'ul'       => array(),
-		'li'       => array(),
+		'div'      => array(
+			'class' => array(),
+		),
 		'label'    => array(
-			'for' => array(),
+			'class' => array(),
+			'for'   => array(),
 		),
 		'input'    => array(
 			'type'  => array(),
 			'id'    => array(),
 			'name'  => array(),
 			'value' => array(),
+		),
+		'figure'   => array(
+			'class' => array(),
+		),
+		'img'      => array(
+			'src'         => array(),
+			'class'       => array(),
+			'alt'         => array(),
+			'data-src'    => array(),
+			'data-srcset' => array(),
+			'data-sizes'  => array(),
+			'srcset'      => array(),
+			'sizes'       => array(),
+			'width'       => array(),
+			'height'      => array(),
+			'loading'     => array(),
+		),
+		'noscript' => array(),
+		'p'        => array(
+			'class' => array(),
+		),
+		'svg'      => array(
+			'xmlns'   => array(),
+			'width'   => array(),
+			'height'  => array(),
+			'viewbox' => array(),
+		),
+		'path'     => array(
+			'd' => array(),
 		),
 	);
 }
