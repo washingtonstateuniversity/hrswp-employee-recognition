@@ -9,6 +9,8 @@
 
 namespace Hrswp\EmployeeRecognition\AwardsTemplate;
 
+use Hrswp\EmployeeRecognition\Formatting;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -33,6 +35,112 @@ function award_year_formatted( int $post_id ): string {
 	}
 
 	return ( '1' !== $award_year ) ? $award_year . ' Years' : 'All Years';
+}
+
+/**
+ * Prints the login and welcome messages.
+ *
+ * @since 1.0.0
+ *
+ * @param object $user The WSU user.
+ * @return void
+ */
+function user_login_message( object $user = null ): void {
+	if ( ! $user ) {
+		$user = wp_get_current_user();
+	}
+
+	$classes = 'wp-block-hrswp-notification';
+	$message = '';
+	$button  = '';
+
+	// if ( true !== Users\is_wsu_authenticated( $user ) ) {
+	if ( ! is_user_logged_in() ) { /* @todo Replace with auth function. */
+		$classes .= ' has-action-button is-style-warning';
+		$message  = esc_html__( 'Please log in with your WSU username to check eligibility and select an award.', 'hrswp-er' );
+		$button   = '<div class="wp-block-hrswp-button"><a class="wp-block-button__link">Log in</a></div>';
+	} else {
+		/**
+		 * Work in progress
+		 *
+		 * By this point we should already know whether they're eligible
+		 * and have their length of service years.
+		 *
+		 * For development we'll just hardcode a year.
+		 *
+		 * @todo Make this a function or class.
+		 */
+		$user_years = (string) '15'; // $user->service_years
+		$user_name  = (string) 'Person Person'; // $user->name
+
+		$classes .= ' wp-block-hrswp-notification is-style-positive';
+		$message  = sprintf(
+			/* translators: 1: the user service years, 2: the user name */
+			esc_html__( 'Congratulations on %1$s years of service, %2$s!', 'hrswp-er' ),
+			esc_html( $user_years ),
+			esc_html( $user_name )
+		);
+	}
+
+	$button = $button ?? '';
+
+	printf(
+		'<div class="%1$s"><p>%2$s</p>%3$s</div>',
+		esc_attr( $classes ),
+		esc_html( $message ),
+		wp_kses_post( $button )
+	);
+}
+
+/**
+ * Prints the awards preview list in the Loop.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function awards_list(): void {
+	// Get the list of award year groups from the plugin settings.
+	$award_years = get_option( 'hrswp_er_award_years' ) ?? '';
+	$award_years = explode( "\n", $award_years );
+
+	$awards_list = '';
+	while ( have_posts() ) {
+		the_post();
+		$post_id    = get_the_ID();
+		$award_year = get_post_meta( $post_id, 'hrswp_er_awards_year', true );
+
+		// Don't display this award if award year group has been removed.
+		if ( ! in_array( $award_year, $award_years, true ) ) {
+			continue;
+		}
+
+		$previous_post       = get_previous_post();
+		$previous_award_year = ( '' !== $previous_post ) ?
+			get_post_meta( $previous_post->ID, 'hrswp_er_awards_year', true ) :
+			'0';
+		$award_year_display  = award_year_formatted( $post_id );
+
+		// Insert group heading if we've switched to a new group.
+		if ( $award_year !== $previous_award_year ) {
+			$awards_list .= '<h3 class="group-title">' . esc_html( $award_year_display ) . '</h3>';
+		}
+
+		$awards_list .= '
+			<div class="award-item">
+				<figure class="wp-block-image size-small">' . get_the_post_thumbnail() . '</figure>
+				<p class="award-title">' . get_the_title() . '</p>
+				<div class="award-description">' . get_the_content() . '</div>
+				<p class="award-group">' . esc_html( $award_year_display ) . '</p>
+			</div>
+		';
+	}
+
+	printf(
+		'<h2>%1$s</h2><div class="awards-list">%2$s</div>',
+		esc_html__( 'Preview Awards', 'hrswp-er' ),
+		wp_kses( $awards_list, Formatting\awards_template_allowed_html() )
+	);
 }
 
 /**
@@ -131,18 +239,14 @@ function all_years_fieldset_html( int $post_id, int $prev_post_id, int $next_pos
  *
  * @param int $post_id      The WP post ID of the award to display. Default is global $post.
  * @param int $prev_post_id The WP post ID of the previous award in the Loop.
- * @param int $next_post_id The WP post ID of the next award in the Loop.
  * @return string The general form fieldset with radio elements.
  */
-function general_fieldset_html( int $post_id, int $prev_post_id, int $next_post_id ): string {
+function general_fieldset_html( int $post_id, int $prev_post_id ): string {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
 
 	$prev_award_year = ( $prev_post_id ) ?
-		get_post_meta( $prev_post_id, 'hrswp_er_awards_year', true ) :
-		'0';
-	$next_award_year = ( $next_post_id ) ?
 		get_post_meta( $prev_post_id, 'hrswp_er_awards_year', true ) :
 		'0';
 
@@ -159,10 +263,55 @@ function general_fieldset_html( int $post_id, int $prev_post_id, int $next_post_
 	// Generate the general award options.
 	$general_fieldset .= radio_item_html( $post_id, 'general-award' );
 
-	// No next award year means we're at the end of the group.
-	if ( '0' === $next_award_year ) {
-		$general_fieldset .= '</fieldset>';
+	return $general_fieldset;
+}
+
+/**
+ * Prints the awards selection form in the Loop.
+ *
+ * @since 1.0.0
+ *
+ * @param object $user The WSU user.
+ * @return void
+ */
+function awards_form( object $user = null ): void {
+	// Get the list of award year groups from the plugin settings.
+	$award_years   = get_option( 'hrswp_er_award_years' ) ?? '';
+	$award_years   = explode( "\n", $award_years );
+	$service_years = (string) '16'; /* @todo Will be like: `get_user_service_years();` */
+	$user_name     = (string) 'Person Person'; /* @todo Will be like: `get_user_name();` */
+	$fields        = '';
+
+	while ( have_posts() ) {
+		the_post();
+		$post_id    = get_the_ID();
+		$award_year = get_post_meta( $post_id, 'hrswp_er_awards_year', true );
+
+		// Don't display this award if award year group has been removed.
+		if (
+			! in_array( $award_year, $award_years, true ) ||
+			$award_year > $service_years
+		) {
+			continue;
+		}
+
+		$prev_post_id = get_previous_post()->ID ?? 0;
+		$next_post_id = get_next_post()->ID ?? 0;
+
+		if ( '1' === $award_year ) {
+			$fields .= all_years_fieldset_html( $post_id, $prev_post_id, $next_post_id );
+		} else {
+			$fields .= general_fieldset_html( $post_id, $prev_post_id );
+		}
 	}
 
-	return $general_fieldset;
+	$fields .= '</fieldset>'; // The `general_fieldset_html` output doesn't close itself.
+	$fields .= '<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="' . esc_html__( 'Submit', 'hrswp-er' ) . '" /></p>';
+
+	printf(
+		'<h2>%1$s</h2><form method="post" class="awards-form" id="hrswp-los-awards" action="%2$s">%3$s</form>',
+		esc_html__( 'Select a Pin and Service Award', 'hrswp-er' ),
+		esc_url( site_url( '/inc/awards-post.php' ) ),
+		wp_kses( $fields, Formatting\awards_template_allowed_html() )
+	);
 }

@@ -10,6 +10,9 @@
 
 namespace Hrswp\EmployeeRecognition\Templates\Awards;
 
+use Hrswp\EmployeeRecognition\AwardsTemplate;
+use Hrswp\EmployeeRecognition\Users;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -24,33 +27,24 @@ get_header();
 
 	<section class="row single gutter awards-archive">
 		<div class="column one">
-		<?php
-		/**
-		 * SSO user authentication
-		 *
-		 * If the user isn't signed in or isn't eligible for an award, then
-		 * display a preview of all available awards.
-		 *
-		 * Using `is_user_logged_in` for now until we have SSO set up to retrieve
-		 * user access validation and data.
-		 *
-		 * @todo Get SSO set up to authenticate user and get their WSU ID
-		 *       for use in retrieving their LOS award status.
-		 */
-		if ( ! is_user_logged_in() ) {
-			?>
-			<div class="wp-block-hrswp-notification has-action-button is-style-warning">
-				<p><strong>Please log in with your WSU username to check eligibility and select an award.</strong></p>
-				<div class="wp-block-hrswp-button"><a class="wp-block-button__link">Log in</a></div>
-			</div>
-			<h2>Preview Awards</h2>
 			<?php
-			require_once dirname( __DIR__ ) . '/awards-list/index.php';
-		} else {
-			// Display the award selection form.
-			require_once dirname( __DIR__ ) . '/awards-form/index.php';
-		}
-		?>
+			if ( have_posts() ) {
+				AwardsTemplate\user_login_message();
+
+				// if ( true !== Users\is_wsu_authenticated() ) {
+				if ( ! is_user_logged_in() ) { /* @todo Replace with auth function. */
+					AwardsTemplate\awards_list();
+				} else {
+					AwardsTemplate\awards_form();
+				}
+			} else {
+				printf(
+					/* translators: the help email address as an href element */
+					'<p>' . esc_html__( 'Sorry, we couldn&rsquo;t find any awards. Please contact HRS at %s.', 'hrswp-er' ) . '</p>',
+					'<a href="' . esc_url( 'mailto:hrs.employeerecognition@wsu.edu' ) . '">' . esc_html( 'hrs.employeerecognition@wsu.edu' ) . '</a>'
+				);
+			}
+			?>
 		</div>
 	</section>
 
