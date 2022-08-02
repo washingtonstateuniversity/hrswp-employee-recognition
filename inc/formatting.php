@@ -57,6 +57,9 @@ function awards_template_allowed_html(): array {
 		'p'        => array(
 			'class' => array(),
 		),
+		'h3'       => array(
+			'class' => array(),
+		),
 		'svg'      => array(
 			'xmlns'   => array(),
 			'width'   => array(),
