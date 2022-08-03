@@ -19,7 +19,7 @@
 	},
 	"main": "build/index.js",
 	"devDependencies": {
-		"@wordpress/icons": "^8.3.0",
+		"@wordpress/icons": "^9.5.0",
 		"@wordpress/scripts": "^22.5.0",
 		"classnames": "^2.3.1",
 		"cssnano": "^5.1.7",
