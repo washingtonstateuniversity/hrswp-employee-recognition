@@ -1,34 +1,39 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
-	"name": "hrswp/er-award-description",
-	"title": "ER Award Description",
-	"category": "text",
-	"description": "The ER award description.",
-	"keywords": [ "text" ],
-	"textdomain": "default",
-	"attributes": {
-		"align": {
-			"type": "string"
-		},
-		"content": {
-			"type": "string",
-			"source": "html",
-			"selector": "p",
-			"default": ""
-		},
-		"placeholder": {
-			"type": "string"
-		},
-		"direction": {
-			"type": "string",
-			"enum": [ "ltr", "rtl" ]
-		}
-	},
-	"supports": {
-		"className": false,
-		"inserter": false
-	},
-	"editorScript": "hrswp-employee-recognition",
-	"editorStyle": "hrswp-employee-recognition-editor"
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "hrswp/er-award-description",
+  "title": "ER Award Description",
+  "category": "text",
+  "description": "The ER award description.",
+  "keywords": [
+    "text"
+  ],
+  "textdomain": "default",
+  "attributes": {
+    "align": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "ltr",
+        "rtl"
+      ]
+    }
+  },
+  "supports": {
+    "className": false,
+    "inserter": false
+  },
+  "editorScript": "hrswp-employee-recognition",
+  "editorStyle": "hrswp-employee-recognition-editor"
 }
