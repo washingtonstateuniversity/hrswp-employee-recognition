@@ -33,7 +33,7 @@ Changelog formatting (http://semver.org/):
 - Fix sortable columns with all positive numbers. (e465bb5)
 - Update Terser dependency. (99331b4)
 
-## 1.0.0-alpha.3 (:construction: 2022-07-08)
+## 1.0.0-alpha.3 (2022-07-08)
 
 ### Added
 
@@ -46,7 +46,7 @@ Changelog formatting (http://semver.org/):
 - Make award post type hierarchical to organize award variants, close #8. (66fb9c5)
 - Switch from `-1` to `1` to represent "all years" option group. (8d726f1)
 
-## 1.0.0-alpha.2 (:construction: 2022-06-13)
+## 1.0.0-alpha.2 (2022-06-13)
 
 ### Added
 
@@ -66,7 +66,7 @@ Changelog formatting (http://semver.org/):
 - Replace `phpcompatibility/php-compatibility` with `phpcompatibility/phpcompatibility-wp`. (77d10d7)
 - Add `type`, `prefers-stable` and change versions in Composer config. (77d10d7)
 
-## 1.0.0-alpha.1 (:construction: 2022-04-25)
+## 1.0.0-alpha.1 (2022-04-25)
 
 ### Added
 
