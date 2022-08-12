@@ -1,21 +1,23 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
-	"name": "hrswp/er-award-inventory",
-	"title": "ER Award Inventory",
-	"category": "widgets",
-	"description": "Inventory tracking for a length-of-service award.",
-	"keywords": [ "text" ],
-	"textdomain": "default",
-	"attributes": {
-		"isQuantityEditable": {
-			"type": "boolean",
-			"default": true
-		}
-	},
-	"supports": {
-		"html": false,
-		"inserter": false
-	},
-	"editorScript": "hrswp-employee-recognition"
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "hrswp/er-award-inventory",
+  "title": "ER Award Inventory",
+  "category": "widgets",
+  "description": "Inventory tracking for a length-of-service award.",
+  "keywords": [
+    "text"
+  ],
+  "textdomain": "default",
+  "attributes": {
+    "isQuantityEditable": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": false
+  },
+  "editorScript": "hrswp-employee-recognition"
 }
