@@ -45,5 +45,6 @@ require_once dirname( __FILE__ ) . '/inc/api.php';
 
 // Load class.
 require_once dirname( __FILE__ ) . '/inc/classes/class-award-post-type.php';
+require_once dirname( __FILE__ ) . '/inc/classes/class-er-user.php';
 
 AwardPostType\Award_Post_Type::factory();
