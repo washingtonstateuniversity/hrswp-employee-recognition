@@ -28,20 +28,23 @@ register_activation_hook(
 	__FILE__,
 	function (): void {
 		// Add an option to check for flushing rewrite rules after activation.
-		add_option( 'hrswp-er-flush-rewrite-rules', true );
+		add_option( 'hrswp-er-flush-rewrite-rules', 'flush' );
 	}
 );
 
 register_deactivation_hook(
 	__FILE__,
 	function (): void {
+		delete_option( 'hrswp-er-flush-rewrite-rules' );
 		flush_rewrite_rules();
 	}
 );
 
-// Load settings and API endpoint.
+// Load settings, template tags, and API endpoint.
 require_once dirname( __FILE__ ) . '/inc/settings.php';
+require_once dirname( __FILE__ ) . '/inc/awards-template.php';
 require_once dirname( __FILE__ ) . '/inc/api.php';
+require_once dirname( __FILE__ ) . '/inc/formatting.php';
 
 // Load class.
 require_once dirname( __FILE__ ) . '/inc/classes/class-award-post-type.php';

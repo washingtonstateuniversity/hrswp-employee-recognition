@@ -23,11 +23,15 @@ class Award_Post_Type {
 		add_action( 'init', array( $this, 'action_register_post_type_blocks' ) );
 		add_action( 'after_setup_theme', array( $this, 'maybe_flush_rewrite_rules' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_register_editor_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'action_enqueue_frontend_scripts' ) );
 		add_filter( 'enter_title_here', array( $this, 'filter_post_title_placeholder' ), 10, 2 );
+		add_filter( 'template_include', array( $this, 'filter_template_include' ), 10, 1 );
+		add_filter( 'nav_menu_css_class', array( $this, 'filter_nav_menu_css_class' ), 15, 3 );
 		add_filter( 'manage_hrswp_er_awards_posts_columns', array( $this, 'filter_manage_post_columns' ), 10, 1 );
 		add_action( 'manage_hrswp_er_awards_posts_custom_column', array( $this, 'action_manage_custom_columns' ), 10, 2 );
 		add_filter( 'manage_edit-hrswp_er_awards_sortable_columns', array( $this, 'filter_manage_sortable_columns' ), 10, 1 );
 		add_action( 'pre_get_posts', array( $this, 'action_awards_list_orderby' ), 10, 1 );
+		add_action( 'pre_get_posts', array( $this, 'action_modify_archive_query' ), 10, 1 );
 	}
 
 	/**
@@ -73,10 +77,10 @@ class Award_Post_Type {
 			'show_in_menu'       => 'tools.php',
 			'menu_position'      => 80,
 			'query_var'          => false,
-			'rewrite'            => false,
+			'rewrite'            => array( 'slug' => 'recognition/awards' ),
 			'show_in_rest'       => true,
 			'capability_type'    => 'post',
-			'has_archive'        => false,
+			'has_archive'        => true,
 			'hierarchical'       => true,
 			'template'           => $template,
 			'template_lock'      => 'all',
@@ -223,7 +227,7 @@ class Award_Post_Type {
 	 * @return void
 	 */
 	public function maybe_flush_rewrite_rules(): void {
-		if ( is_admin() && true === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
+		if ( is_admin() && 'flush' === get_option( 'hrswp-er-flush-rewrite-rules' ) ) {
 			delete_option( 'hrswp-er-flush-rewrite-rules' );
 			flush_rewrite_rules();
 		}
@@ -257,6 +261,28 @@ class Award_Post_Type {
 	}
 
 	/**
+	 * Registers scripts and styles to load on the archive frontend only.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @see wp_enqueue_style
+	 * @return void
+	 */
+	public function action_enqueue_frontend_scripts(): void {
+		if ( ! is_post_type_archive( 'hrswp_er_awards' ) ) {
+			return;
+		}
+		$asset_file = include plugin_dir_path( dirname( __DIR__ ) ) . 'build/index.asset.php';
+
+		wp_enqueue_style(
+			'hrswp-employee-recognition',
+			plugins_url( 'build/style-index.css', dirname( __DIR__ ) ),
+			array(),
+			$asset_file['version'],
+		);
+	}
+
+	/**
 	 * Replaces the "Add title" placeholder for the ER Awards post type.
 	 *
 	 * @since 1.0.0
@@ -270,6 +296,72 @@ class Award_Post_Type {
 			return $text;
 		}
 		return __( 'Add award name', 'hrswp-er' );
+	}
+
+	/**
+	 * Filters the path of the awards post type archive template.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The path of the template to include.
+	 * @return string The path of the template to include.
+	 */
+	public function filter_template_include( string $template ): string {
+		if ( is_post_type_archive( 'hrswp_er_awards' ) ) {
+			$template = dirname( __DIR__, 2 ) . '/build/templates/awards/index.php';
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Modifies the query properties for the awards archive page.
+	 *
+	 * @see `pre_get_posts`
+	 * @param \WP_Query $query The WP_Query instance (passed by reference).
+	 * @return void
+	 */
+	public function action_modify_archive_query( \WP_Query $query ): void {
+		if (
+			! is_admin() &&
+			$query->is_main_query() &&
+			$query->is_post_type_archive( 'hrswp_er_awards' )
+		) {
+			$query->set( 'posts_per_page', -1 );
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'meta_key', 'hrswp_er_awards_year' );
+			$query->set( 'meta_type', 'numeric' );
+			$query->set( 'order', 'ASC' );
+		}
+	}
+
+	/**
+	 * Moves `active` menu class from default archive to awards archive page.
+	 *
+	 * Hooks into `nav_menu_css_class` using a later priority to allow parent
+	 * theme to finish its own modifications.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array     $classes Required. Current list of nav menu item classes.
+	 * @param \WP_Post  $item    Post object representing the menu item data.
+	 * @param \stdClass $args    The arguments used to create the menu.
+	 * @return array Array of CSS classes for the nav menu item.
+	 */
+	public function filter_nav_menu_css_class( array $classes, \WP_Post $item, \stdClass $args ): array {
+		if (
+			in_array( $args->menu, array( 'site' ), true ) &&
+			is_post_type_archive( 'hrswp_er_awards' )
+		) {
+			if ( get_option( 'page_for_posts' ) === $item->object_id ) {
+				$classes = array();
+			}
+			if ( 'post_type_archive' === $item->type ) {
+				$classes[] = 'active';
+			}
+		}
+
+		return $classes;
 	}
 
 	/**
