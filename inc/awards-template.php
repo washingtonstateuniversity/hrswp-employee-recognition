@@ -70,7 +70,7 @@ function user_login_message( object $user = null ): void {
 		 *
 		 * @todo Make this a function or class.
 		 */
-		$user_years = (string) '15'; // $user->service_years
+		$user_years = (string) '50'; // $user->service_years
 		$user_name  = (string) 'Person Person'; // $user->name
 
 		$classes .= ' wp-block-hrswp-notification is-style-positive';
@@ -157,23 +157,39 @@ function radio_item_html( int $post_id, string $name = '' ): string {
 		$post_id = get_the_ID();
 	}
 
+	$children = get_children(
+		array(
+			'post_type'      => 'hrswp_er_awards',
+			'posts_per_page' => -1,
+			'post_parent'    => $post_id,
+		)
+	);
+
+	if ( !! $children ) {
+		var_dump( $children );
+	}
+
 	$title = get_the_title( $post_id );
-	$value = sanitize_title( $title );
+	$value = ( ! $children ) ? sanitize_title( $title ) : '';
+
+    $options = '';
 
 	return sprintf(
 		'<div class="form-award-item">
 			<figure class="wp-block-image size-small">%4$s</figure>
 			<label class="award-title" for="%1$s">%2$s</label>
-			<input type="radio" id="%1$s" name="%3$s" value="%1$s">
+			<input type="radio" id="%1$s" name="%3$s" value="%7$s">
 			<div class="award-description">%5$s</div>
 			<p class="award-group">%6$s</p>
-		</div>',
-		esc_attr( $value ),
+		</div>%8$s',
+		esc_attr( sanitize_title( $title ) ),
 		esc_attr( $title ),
 		esc_attr( $name ),
 		get_the_post_thumbnail( $post_id ),
 		get_the_content( $post_id ),
-		esc_html( award_year_formatted( $post_id ) )
+		esc_html( award_year_formatted( $post_id ) ),
+        esc_attr( $value ),
+        $options
 	);
 }
 
@@ -278,12 +294,13 @@ function awards_form( object $user = null ): void {
 	// Get the list of award year groups from the plugin settings.
 	$award_years   = get_option( 'hrswp_er_award_years' ) ?? '';
 	$award_years   = explode( "\n", $award_years );
-	$service_years = (string) '16'; /* @todo Will be like: `get_user_service_years();` */
+	$service_years = (string) '50'; /* @todo Will be like: `get_user_service_years();` */
 	$user_name     = (string) 'Person Person'; /* @todo Will be like: `get_user_name();` */
 	$fields        = '';
 
 	while ( have_posts() ) {
 		the_post();
+
 		$post_id    = get_the_ID();
 		$award_year = get_post_meta( $post_id, 'hrswp_er_awards_year', true );
 
