@@ -4,6 +4,9 @@
 
 ## Overview
 
+> [!CAUTION]
+> As of 26 July 2024, this project is archived and no longer being actively maintained.
+
 A WSU Human Resource Services WordPress plugin that helps to manage the employee recognition progmam.
 
 ## Description
@@ -69,7 +72,7 @@ Read the [CHANGELOG.md](https://github.com/washingtonstateuniversity/hrswp-plugi
 
 ## Support Level
 
-**Active:** WSU HRS actively works on this plugin. We plan to continue work for the foreseeable future, adding new features, enhancing existing ones, and maintaining compatability with the latest version of WordPress. Bug reports, feature requests, questions, and pull requests are welcome.
+**Archived:** WSU HRS no longer maintains this plugin.
 
 ## Changelog
 
